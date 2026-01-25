@@ -158,7 +158,6 @@
 					</li>
 					<li>• Banking early and often is safer, but riskier plays can pay off big</li>
 					<li>• Watch your opponents' scores - sometimes you need to take risks to catch up</li>
-					<li>• Getting all 10 dice green is rare but powerful - you get to start fresh!</li>
 				</ul>
 			</section>
 		</div>

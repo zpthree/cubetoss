@@ -52,9 +52,9 @@ export function createDice(): Die[] {
 }
 
 // Roll a single die
-// Each die has 6 faces: 2 green, 2 yellow, 2 red
+// Each die has 6 faces: 3 green, 2 yellow, 1 red
 export function rollDie(): DieColor {
-	const dieFaces: DieColor[] = ['green', 'green', 'yellow', 'yellow', 'red', 'red'];
+	const dieFaces: DieColor[] = ['green', 'green', 'green', 'yellow', 'yellow', 'red'];
 	const faceIndex = Math.floor(Math.random() * 6);
 	const result = dieFaces[faceIndex];
 	console.log(`[rollDie] faceIndex=${faceIndex}, result=${result}`);
