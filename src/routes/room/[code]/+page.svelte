@@ -358,15 +358,15 @@
 	</style>
 </svelte:head>
 
-<div class="min-h-screen bg-[#1a1a1a] p-4">
+<div class="p-4">
 	{#if loading}
-		<div class="flex min-h-screen items-center justify-center">
+		<div class="flex items-center justify-center">
 			<div class="text-xl font-bold text-white" style="text-shadow: 2px 2px 0 #FF1493;">
 				Loading game...
 			</div>
 		</div>
 	{:else if !room}
-		<div class="flex min-h-screen flex-col items-center justify-center">
+		<div class="flex flex-col items-center justify-center">
 			<div class="mb-4 text-xl font-bold text-white" style="text-shadow: 2px 2px 0 #FF1493;">
 				Room not found
 			</div>

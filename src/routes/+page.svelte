@@ -121,7 +121,7 @@
 	</style>
 </svelte:head>
 
-<div class="flex min-h-screen items-center justify-center bg-[#1a1a1a] p-4">
+<div class="flex items-center justify-center p-4">
 	<div class="w-full max-w-md">
 		<!-- Logo/Title -->
 		<div class="mb-8 text-center">

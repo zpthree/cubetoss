@@ -37,7 +37,7 @@
 	</style>
 </svelte:head>
 
-<div class="min-h-screen bg-[#1a1a1a] p-4">
+<div class="p-4">
 	<div class="mx-auto max-w-2xl">
 		<!-- Header -->
 		<div class="mb-8 text-center">
