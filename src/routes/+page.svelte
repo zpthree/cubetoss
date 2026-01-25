@@ -80,7 +80,7 @@
 </script>
 
 <svelte:head>
-	<title>Cube Toss! - Online Dice Game</title>
+	<title>Cube Toss! - Online Cube Game</title>
 	<style>
 		.bg-90s {
 			background: #54276f;
@@ -134,7 +134,7 @@
 				</h1>
 			</a>
 			<p class="text-lg font-bold text-white" style="text-shadow: 2px 2px 0 #9B59B6;">
-				The dice game of risk and reward
+				The cube game of risk and reward
 			</p>
 		</div>
 

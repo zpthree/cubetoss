@@ -57,7 +57,6 @@ export function rollDie(): DieColor {
 	const dieFaces: DieColor[] = ['green', 'green', 'green', 'yellow', 'yellow', 'red'];
 	const faceIndex = Math.floor(Math.random() * 6);
 	const result = dieFaces[faceIndex];
-	console.log(`[rollDie] faceIndex=${faceIndex}, result=${result}`);
 	return result;
 }
 
@@ -171,7 +170,7 @@ export function rollDice(
 	// Get unlocked dice to roll
 	const unlockedDice = gameState.dice.filter((d: Die) => !d.locked);
 
-	// If no dice to roll, something is wrong - reset dice (this is the "all 10 green" case)
+	// If no cube to roll, something is wrong - reset cube (this is the "all 10 green" case)
 	if (unlockedDice.length === 0) {
 		gameState.dice = createDice();
 	}
@@ -181,42 +180,29 @@ export function rollDice(
 	let rolledAnyRed = false;
 	const rollResults: string[] = [];
 	const rolledDiceSnapshot: Die[] = [];
-	console.log({ gameState });
 	for (const die of gameState.dice) {
 		if (!die.locked) {
 			die.color = rollDie();
 			rollResults.push(die.color);
 			// Use explicit string comparison
 			if (die.color === 'green') {
-				console.log(`[ROLL] Die ${die.id} rolled GREEN - locking and adding point`);
 				rolledAnyGreen = true;
 				die.locked = true;
 				gameState.turnScore += 1;
 			}
 			if (die.color === 'red') {
-				console.log(`[ROLL] Die ${die.id} rolled RED`);
 				rolledAnyRed = true;
 			}
 			rolledDiceSnapshot.push({ id: die.id, color: die.color, locked: die.locked });
 		}
 	}
-	console.log({ rolledAnyGreen, rolledAnyRed, rollResults });
-	// Debug logging - show each die's color
-	console.log(
-		`[ROLL] Player ${currentPlayer.name}: dice colors = [${gameState.dice.map((d) => `${d.id}:${d.color}:${d.locked}`).join(', ')}]`
-	);
-	console.log(`[ROLL] Roll results: [${rollResults.join(', ')}]`);
-	console.log(`[ROLL] Flags - rolledAnyGreen: ${rolledAnyGreen}, rolledAnyRed: ${rolledAnyRed}`);
 
 	// Check if busted (rolled red without any green)
 	// ONLY bust if there was at least one red AND zero greens
 	const isBusted = rolledAnyRed && !rolledAnyGreen;
 
-	console.log(`[ROLL] isBusted: ${isBusted} (red:${rolledAnyRed} && !green:${!rolledAnyGreen})`);
-
 	if (isBusted) {
 		// Busted! Lose all turn points
-		console.log(`[ROLL] BUSTING - ending turn`);
 		gameState.turnScore = 0;
 		endTurn(room);
 		broadcastToRoom(code, 'dice-rolled', { room, busted: true, rolledDiceSnapshot });
@@ -224,13 +210,11 @@ export function rollDice(
 	}
 
 	// NOT busted - player can continue rolling or bank
-	console.log(`[ROLL] NOT busted - player continues. Turn score: ${gameState.turnScore}`);
 
-	// Check if all dice are green (locked) - if so, reset for another roll
+	// Check if all cube are green (locked) - if so, reset for another roll
 	const allLocked = gameState.dice.every((d: Die) => d.locked);
 	if (allLocked) {
-		// Reset all dice to roll again, keeping the score
-		console.log(`[ROLL] All 10 dice locked! Resetting dice.`);
+		// Reset all cube to roll again, keeping the score
 		gameState.dice = createDice();
 	}
 

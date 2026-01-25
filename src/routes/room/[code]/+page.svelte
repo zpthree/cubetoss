@@ -10,10 +10,10 @@
 	let loading = $state(true);
 	let rolling = $state(false);
 	let busted = $state(false);
-	let showingRoll = $state(false); // True when showing dice results before separating greens
-	let previouslyLockedIds: number[] = $state([]); // Track dice that were locked before the roll
-	let lastRolledDice: Die[] = $state([]); // The dice that were just rolled (snapshot)
-	let revealedDiceCount = $state(0); // For staggered dice reveal animation
+	let showingRoll = $state(false); // True when showing cube results before separating greens
+	let previouslyLockedIds: number[] = $state([]); // Track cube that were locked before the roll
+	let lastRolledDice: Die[] = $state([]); // The cube that were just rolled (snapshot)
+	let revealedDiceCount = $state(0); // For staggered cube reveal animation
 	let eventSource: EventSource | null = null;
 
 	// Derived state
@@ -115,8 +115,8 @@
 			console.log('[DICE-ROLLED] currentPlayerIndex:', eventData.room.gameState.currentPlayerIndex);
 			console.log('[DICE-ROLLED] turnScore:', eventData.room.gameState.turnScore);
 
-			// Capture which dice were just rolled (prefer server snapshot to avoid mismatch
-			// when the backend resets dice after an all-green roll or a bust)
+			// Capture which cube were just rolled (prefer server snapshot to avoid mismatch
+			// when the backend resets cube after an all-green roll or a bust)
 			const rolledDice: Die[] = Array.isArray(eventData.rolledDiceSnapshot)
 				? eventData.rolledDiceSnapshot
 				: eventData.room.gameState.dice.filter((d: Die) => !previouslyLockedIds.includes(d.id));
@@ -129,7 +129,7 @@
 				showingRoll = true;
 				revealedDiceCount = 0;
 
-				// Reveal dice one at a time with 150ms delay each
+				// Reveal cube one at a time with 150ms delay each
 				const totalDice = rolledDice.length;
 				for (let i = 0; i < totalDice; i++) {
 					setTimeout(() => {
@@ -137,7 +137,7 @@
 					}, i * 150);
 				}
 
-				// After all dice revealed + 1 second pause, separate greens
+				// After all cube revealed + 1 second pause, separate greens
 				setTimeout(
 					() => {
 						showingRoll = false;
@@ -358,7 +358,7 @@
 	</style>
 </svelte:head>
 
-<div class="p-4">
+<div class="w-full p-4">
 	{#if loading}
 		<div class="flex items-center justify-center">
 			<div class="text-xl font-bold text-white" style="text-shadow: 2px 2px 0 #FF1493;">
@@ -373,7 +373,7 @@
 			<a href="/" class="text-90s-yellow font-bold hover:text-white">← Back to Home</a>
 		</div>
 	{:else}
-		<div class="mx-auto max-w-4xl">
+		<div class="mx-auto w-full max-w-4xl">
 			<!-- Header -->
 			<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
 				<div>
@@ -402,34 +402,6 @@
 
 			<!-- Game Area -->
 			<div class="grid gap-6 md:grid-cols-3">
-				<!-- Players List -->
-				<div class="border-90s-cyan rounded-xl border-4 bg-black/80 p-4 backdrop-blur">
-					<h2 class="text-90s-cyan mb-3 font-bold">Players</h2>
-					<div class="space-y-2">
-						{#each room.players as player, i}
-							<div
-								class="flex items-center justify-between rounded-lg p-3 transition-all {currentPlayer?.id ===
-								player.id
-									? 'bg-90s-pink/30 ring-90s-pink ring-2'
-									: 'bg-black/40'}"
-							>
-								<div class="flex items-center gap-2">
-									{#if player.isHost}
-										<span class="text-90s-yellow">👑</span>
-									{/if}
-									<span class="text-white {player.id === playerId ? 'font-bold' : ''}">
-										{player.name}
-										{#if player.id === playerId}
-											<span class="text-90s-cyan text-xs">(you)</span>
-										{/if}
-									</span>
-								</div>
-								<div class="text-90s-yellow font-bold">{player.score}</div>
-							</div>
-						{/each}
-					</div>
-				</div>
-
 				<!-- Main Game Board -->
 				<div
 					class="border-90s-pink rounded-xl border-4 bg-black/80 p-6 backdrop-blur md:col-span-2"
@@ -510,99 +482,101 @@
 								</p>
 							</div>
 
-							<!-- Always show banked dice at the top -->
-							{#if lockedDice.length > 0 && !showingRoll}
-								<div class="mb-4 transition-all duration-500">
-									<p class="text-90s-cyan mb-2 text-center text-sm font-bold">
-										🏦 Banked this turn ({lockedDice.length} point{lockedDice.length !== 1
-											? 's'
-											: ''})
-									</p>
-									<div class="flex flex-wrap justify-center gap-2">
-										{#each lockedDice as die (die.id)}
-											<div
-												class="bg-90s-cyan/30 border-90s-cyan text-90s-cyan flex h-10 w-10 items-center justify-center rounded-lg border-2 text-lg font-bold transition-all duration-500"
-											>
-												✓
-											</div>
-										{/each}
-									</div>
-								</div>
-							{:else if previouslyLockedIds.length > 0}
-								<!-- Show previously banked dice while displaying roll results -->
-								<div class="mb-4 transition-all duration-500">
-									<p class="text-90s-cyan mb-2 text-center text-sm font-bold">
-										🏦 Banked this turn ({previouslyLockedIds.length} point{previouslyLockedIds.length !==
-										1
-											? 's'
-											: ''})
-									</p>
-									<div class="flex flex-wrap justify-center gap-3">
-										{#each previouslyLockedIds as dieId (dieId)}
-											<div
-												class="bg-90s-cyan/30 border-90s-cyan text-90s-cyan flex h-10 w-10 items-center justify-center rounded-lg border-2 text-lg font-bold transition-all duration-500"
-											>
-												✓
-											</div>
-										{/each}
-									</div>
-								</div>
-							{/if}
-
-							{#if showingRoll && lastRolledDice.length > 0}
-								<!-- Show only the just-rolled dice in the play area with staggered reveal -->
-								<div class="mb-6">
-									<p class="text-90s-yellow mb-3 text-center text-sm font-bold">🎲 Rolling...</p>
-									<div class="mx-auto flex max-w-[400px] flex-wrap justify-center gap-5">
-										{#each lastRolledDice as die, index (die.id)}
-											{#if index < revealedDiceCount}
-												<!-- Revealed die -->
-												<div
-													class={getDieClasses(die) +
-														' animate-pop-in transform transition-all duration-300'}
-												>
-													{getDieEmoji(die)}
-												</div>
-											{:else}
-												<!-- Unrevealed die (spinning) -->
-												<div
-													class="bg-90s-purple animate-spin-slow flex h-12 w-12 items-center justify-center rounded-xl border-2 border-white text-2xl font-bold text-white shadow-lg sm:h-14 sm:w-14"
-												>
-													?
-												</div>
-											{/if}
-										{/each}
-									</div>
-								</div>
-							{:else}
-								<!-- Active Dice (to roll) -->
-								{#if activeDice.length > 0}
-									<div class="mb-4">
-										<p class="text-90s-purple mb-2 text-center text-sm font-bold">
-											🎲 Dice to roll ({activeDice.length} remaining)
+							<div class="h-[280px]">
+								<!-- Always show banked dice at the top -->
+								{#if lockedDice.length > 0 && !showingRoll}
+									<div class="mb-4 transition-all duration-500">
+										<p class="text-90s-cyan mb-2 text-center text-sm font-bold">
+											🏦 Banked this turn ({lockedDice.length} point{lockedDice.length !== 1
+												? 's'
+												: ''})
 										</p>
-										<div class="mx-auto flex max-w-[340px] flex-wrap justify-center gap-3">
-											{#each activeDice as die (die.id)}
+										<div class="flex flex-wrap justify-center gap-2">
+											{#each lockedDice as die (die.id)}
 												<div
-													class={getDieClasses(die) +
-														(rolling && !die.locked ? ' animate-bounce' : '')}
+													class="bg-90s-cyan/30 border-90s-cyan text-90s-cyan flex h-10 w-10 items-center justify-center rounded-lg border-2 text-lg font-bold transition-all duration-500"
 												>
-													{getDieEmoji(die)}
+													✓
 												</div>
 											{/each}
 										</div>
 									</div>
-								{:else if lockedDice.length === 10}
-									<div
-										class="bg-90s-cyan/20 border-90s-cyan mb-4 rounded-xl border-2 p-4 text-center"
-									>
-										<p class="text-90s-cyan text-lg font-bold">🎉 All 10 dice are green!</p>
-										<p class="text-sm text-white">
-											Roll again to keep scoring, or bank your {room.gameState.turnScore} points!
+								{:else if previouslyLockedIds.length > 0}
+									<!-- Show previously banked dice while displaying roll results -->
+									<div class="mb-4 transition-all duration-500">
+										<p class="text-90s-cyan mb-2 text-center text-sm font-bold">
+											🏦 Banked this turn ({previouslyLockedIds.length} point{previouslyLockedIds.length !==
+											1
+												? 's'
+												: ''})
 										</p>
+										<div class="flex flex-wrap justify-center gap-3">
+											{#each previouslyLockedIds as dieId (dieId)}
+												<div
+													class="bg-90s-cyan/30 border-90s-cyan text-90s-cyan flex h-10 w-10 items-center justify-center rounded-lg border-2 text-lg font-bold transition-all duration-500"
+												>
+													✓
+												</div>
+											{/each}
+										</div>
 									</div>
 								{/if}
-							{/if}
+
+								{#if showingRoll && lastRolledDice.length > 0}
+									<!-- Show only the just-rolled dice in the play area with staggered reveal -->
+									<div class="mb-6">
+										<p class="text-90s-yellow mb-3 text-center text-sm font-bold">🎲 Rolling...</p>
+										<div class="mx-auto flex max-w-[400px] flex-wrap justify-center gap-5">
+											{#each lastRolledDice as die, index (die.id)}
+												{#if index < revealedDiceCount}
+													<!-- Revealed die -->
+													<div
+														class={getDieClasses(die) +
+															' animate-pop-in transform transition-all duration-300'}
+													>
+														{getDieEmoji(die)}
+													</div>
+												{:else}
+													<!-- Unrevealed die (spinning) -->
+													<div
+														class="bg-90s-purple animate-spin-slow flex h-12 w-12 items-center justify-center rounded-xl border-2 border-white text-2xl font-bold text-white shadow-lg sm:h-14 sm:w-14"
+													>
+														?
+													</div>
+												{/if}
+											{/each}
+										</div>
+									</div>
+								{:else}
+									<!-- Active Dice (to roll) -->
+									{#if activeDice.length > 0}
+										<div class="mb-4">
+											<p class="text-90s-purple mb-2 text-center text-sm font-bold">
+												🎲 Dice to roll ({activeDice.length} remaining)
+											</p>
+											<div class="mx-auto flex max-w-[340px] flex-wrap justify-center gap-3">
+												{#each activeDice as die (die.id)}
+													<div
+														class={getDieClasses(die) +
+															(rolling && !die.locked ? ' animate-bounce' : '')}
+													>
+														{getDieEmoji(die)}
+													</div>
+												{/each}
+											</div>
+										</div>
+									{:else if lockedDice.length === 10}
+										<div
+											class="bg-90s-cyan/20 border-90s-cyan mb-4 rounded-xl border-2 p-4 text-center"
+										>
+											<p class="text-90s-cyan text-lg font-bold">🎉 All 10 dice are green!</p>
+											<p class="text-sm text-white">
+												Roll again to keep scoring, or bank your {room.gameState.turnScore} points!
+											</p>
+										</div>
+									{/if}
+								{/if}
+							</div>
 
 							<!-- Bust notification -->
 							{#if busted}
@@ -615,29 +589,57 @@
 
 							<!-- Action Buttons -->
 							{#if isMyTurn}
-								<div class="flex justify-center gap-4">
+								<div class="mx-auto grid max-w-sm grid-cols-2 gap-4">
 									<button
 										onclick={rollDice}
 										disabled={!canRoll}
-										class="bg-90s-cyan hover:bg-90s-cyan/80 transform rounded-xl border-2 border-white px-8 py-4 text-xl font-bold text-black transition-all hover:scale-105 disabled:cursor-not-allowed disabled:bg-gray-600"
+										class="bg-90s-cyan md:hover:bg-90s-cyan/80 transform rounded-xl border-2 border-white px-8 py-4 font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-gray-600 md:text-lg md:hover:scale-105"
 									>
-										{rolling ? '🎲 Rolling...' : '🎲 Roll Cubes'}
+										{rolling ? 'Rolling...' : 'Roll'}
 									</button>
 									<button
 										onclick={bankPoints}
 										disabled={!canBank}
-										class="bg-90s-yellow hover:bg-90s-yellow/80 transform rounded-xl border-2 border-white px-8 py-4 text-xl font-bold text-black transition-all hover:scale-105 disabled:cursor-not-allowed disabled:bg-gray-600"
+										class="bg-90s-yellow md:hover:bg-90s-yellow/80 transform rounded-xl border-2 border-white px-8 py-4 font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-gray-600 md:text-lg md:hover:scale-105"
 									>
-										💰 Bank {room.gameState.turnScore} pts
+										Bank {room.gameState.turnScore} pts
 									</button>
 								</div>
 							{:else}
 								<p class="text-90s-purple text-center">
-									Waiting for {currentPlayer?.name} to play...
+									Watching {currentPlayer?.name}...
 								</p>
 							{/if}
 						</div>
 					{/if}
+				</div>
+
+				<!-- Players List -->
+				<div class="border-90s-cyan rounded-xl border-4 bg-black/80 p-4 backdrop-blur">
+					<h2 class="text-90s-cyan mb-3 font-bold">Players</h2>
+					<div class="space-y-2">
+						{#each room.players as player, i}
+							<div
+								class="flex items-center justify-between rounded-lg p-3 transition-all {currentPlayer?.id ===
+								player.id
+									? 'bg-90s-pink/30 ring-90s-pink ring-2'
+									: 'bg-black/40'}"
+							>
+								<div class="flex items-center gap-2">
+									{#if player.isHost}
+										<span class="text-90s-yellow">👑</span>
+									{/if}
+									<span class="text-white {player.id === playerId ? 'font-bold' : ''}">
+										{player.name}
+										{#if player.id === playerId}
+											<span class="text-90s-cyan text-xs">(you)</span>
+										{/if}
+									</span>
+								</div>
+								<div class="text-90s-yellow font-bold">{player.score}</div>
+							</div>
+						{/each}
+					</div>
 				</div>
 			</div>
 
@@ -657,16 +659,16 @@
 			<details class="border-90s-purple mt-6 rounded-xl border-2 bg-black/30 p-4">
 				<summary class="text-90s-yellow cursor-pointer font-bold">📖 How to Play</summary>
 				<div class="mt-3 space-y-2 text-sm text-white">
-					<p class="flex items-center gap-1">
+					<p class="inline-=flex">
 						<span class="bg-90s-cyan inline-block size-4 rounded-full"></span>
 						<strong class="text-90s-cyan">Green dice</strong> = +1 point. These get locked and you keep
 						rolling!
 					</p>
-					<p class="flex items-center gap-1">
+					<p class="inline-=flex">
 						<span class="bg-90s-yellow inline-block size-4 rounded-full"></span>
 						<strong class="text-90s-yellow">Yellow dice</strong> = Neutral. Roll again or bank your points.
 					</p>
-					<p class="flex items-center gap-1">
+					<p class="inline-=flex">
 						<span class="bg-90s-pink inline-block size-4 rounded-full"></span>
 						<strong class="text-90s-pink">Red dice</strong> = Danger! If you roll ANY red without rolling
 						at least one green, you BUST and lose all unbanked points for this turn.
