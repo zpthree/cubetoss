@@ -62,7 +62,7 @@ export function rollDie(): DieColor {
 }
 
 // Create a new room
-export function createRoom(hostEmail: string, hostName: string): { room: Room; playerId: string } {
+export function createRoom(hostName: string): { room: Room; playerId: string } {
 	const code = generateRoomCode();
 	const playerId = generatePlayerId();
 
@@ -77,7 +77,6 @@ export function createRoom(hostEmail: string, hostName: string): { room: Room; p
 
 	const room: Room = {
 		code,
-		hostEmail,
 		players: [host],
 		gameState: createInitialGameState(),
 		createdAt: Date.now(),

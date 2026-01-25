@@ -2,7 +2,6 @@
 	import type { Room } from '$lib/types';
 
 	let mode: 'home' | 'create' | 'join' = $state('home');
-	let hostEmail = $state('');
 	let hostName = $state('');
 	let playerName = $state('');
 	let roomCode = $state('');
@@ -10,8 +9,8 @@
 	let loading = $state(false);
 
 	async function createRoom() {
-		if (!hostEmail || !hostName) {
-			error = 'Please fill in all fields';
+		if (!hostName) {
+			error = 'Please enter your name';
 			return;
 		}
 
@@ -22,7 +21,7 @@
 			const response = await fetch('/api/room/create', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ hostEmail, hostName })
+				body: JSON.stringify({ hostName })
 			});
 
 			const data = await response.json();
@@ -81,10 +80,10 @@
 </script>
 
 <svelte:head>
-	<title>Toss Up! - Online Dice Game</title>
+	<title>Cube Toss! - Online Dice Game</title>
 	<style>
 		.bg-90s {
-			background: linear-gradient(135deg, #00ced1 0%, #ff1493 50%, #ffd700 100%);
+			background: #54276f;
 		}
 		.text-90s-pink {
 			color: #ff1493;
@@ -96,7 +95,7 @@
 			color: #ffd700;
 		}
 		.text-90s-purple {
-			color: #9b59b6;
+			color: #54276f;
 		}
 		.bg-90s-pink {
 			background-color: #ff1493;
@@ -108,7 +107,7 @@
 			background-color: #ffd700;
 		}
 		.bg-90s-purple {
-			background-color: #9b59b6;
+			background-color: #54276f;
 		}
 		.border-90s-pink {
 			border-color: #ff1493;
@@ -122,7 +121,7 @@
 	</style>
 </svelte:head>
 
-<div class="bg-90s flex min-h-screen items-center justify-center p-4">
+<div class="flex min-h-screen items-center justify-center bg-[#1a1a1a] p-4">
 	<div class="w-full max-w-md">
 		<!-- Logo/Title -->
 		<div class="mb-8 text-center">
@@ -131,7 +130,7 @@
 					class="mb-2 text-5xl font-bold text-white drop-shadow-lg"
 					style="text-shadow: 3px 3px 0 #FF1493, 6px 6px 0 #00CED1;"
 				>
-					🎲 Toss Up!
+					🎲 Cube Toss!
 				</h1>
 			</a>
 			<p class="text-lg font-bold text-white" style="text-shadow: 2px 2px 0 #9B59B6;">
@@ -206,20 +205,6 @@
 							placeholder="Enter your name"
 							class="border-90s-pink ring-90s-pink w-full rounded-xl border-2 bg-black/50 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:outline-none"
 						/>
-					</div>
-
-					<div>
-						<label for="hostEmail" class="text-90s-cyan mb-1 block text-sm font-bold">
-							Your Email
-						</label>
-						<input
-							id="hostEmail"
-							type="email"
-							bind:value={hostEmail}
-							placeholder="your@email.com"
-							class="border-90s-pink ring-90s-pink w-full rounded-xl border-2 bg-black/50 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:outline-none"
-						/>
-						<p class="text-90s-yellow mt-1 text-xs">Used to identify you as the host</p>
 					</div>
 
 					{#if error}

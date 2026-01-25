@@ -7,17 +7,11 @@ export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const body: CreateRoomRequest = await request.json();
 
-		if (!body.hostEmail || !body.hostName) {
-			return json({ success: false, error: 'Email and name are required' }, { status: 400 });
+		if (!body.hostName) {
+			return json({ success: false, error: 'Name is required' }, { status: 400 });
 		}
 
-		// Basic email validation
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(body.hostEmail)) {
-			return json({ success: false, error: 'Invalid email address' }, { status: 400 });
-		}
-
-		const { room, playerId } = createRoom(body.hostEmail, body.hostName);
+		const { room, playerId } = createRoom(body.hostName);
 
 		return json({
 			success: true,

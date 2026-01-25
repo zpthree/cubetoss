@@ -1,1 +1,6 @@
 @import 'tailwindcss';
+* {
+	font-family: 'Anybody', sans-serif;
+	font-optical-sizing: auto;
+	font-variation-settings: 'wdth' 100;
+}

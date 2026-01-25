@@ -288,7 +288,7 @@
 </script>
 
 <svelte:head>
-	<title>Room {data.roomCode} - Toss Up!</title>
+	<title>Room {data.roomCode} - Cube Toss!</title>
 	<style>
 		.bg-90s {
 			background: linear-gradient(135deg, #00ced1 0%, #ff1493 50%, #ffd700 100%);
@@ -358,7 +358,7 @@
 	</style>
 </svelte:head>
 
-<div class="bg-90s min-h-screen p-4">
+<div class="min-h-screen bg-[#1a1a1a] p-4">
 	{#if loading}
 		<div class="flex min-h-screen items-center justify-center">
 			<div class="text-xl font-bold text-white" style="text-shadow: 2px 2px 0 #FF1493;">
@@ -379,7 +379,7 @@
 				<div>
 					<a href="/">
 						<h1 class="text-2xl font-bold text-white" style="text-shadow: 2px 2px 0 #FF1493;">
-							🎲 Toss Up!
+							🎲 Cube Toss!
 						</h1>
 					</a>
 					<button

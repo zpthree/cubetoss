@@ -1,4 +1,4 @@
-// Game Types for Toss Up Cube
+// Game Types for Cube Toss Cube
 
 export type DieColor = 'green' | 'yellow' | 'red';
 
@@ -29,7 +29,6 @@ export interface GameState {
 
 export interface Room {
 	code: string;
-	hostEmail: string;
 	players: Player[];
 	gameState: GameState;
 	createdAt: number;
@@ -51,7 +50,6 @@ export interface RoomEvent {
 
 // API Request/Response types
 export interface CreateRoomRequest {
-	hostEmail: string;
 	hostName: string;
 }
 
