@@ -115,11 +115,11 @@
 			console.log('[DICE-ROLLED] currentPlayerIndex:', eventData.room.gameState.currentPlayerIndex);
 			console.log('[DICE-ROLLED] turnScore:', eventData.room.gameState.turnScore);
 
-			// Capture which dice were just rolled (the ones that weren't previously locked)
-			// These are the dice we want to show in the "play area" during showingRoll
-			const rolledDice = eventData.room.gameState.dice.filter(
-				(d: Die) => !previouslyLockedIds.includes(d.id)
-			);
+			// Capture which dice were just rolled (prefer server snapshot to avoid mismatch
+			// when the backend resets dice after an all-green roll or a bust)
+			const rolledDice: Die[] = Array.isArray(eventData.rolledDiceSnapshot)
+				? eventData.rolledDiceSnapshot
+				: eventData.room.gameState.dice.filter((d: Die) => !previouslyLockedIds.includes(d.id));
 			lastRolledDice = rolledDice;
 
 			room = eventData.room;
@@ -223,7 +223,7 @@
 				error = result.error;
 			}
 		} catch {
-			error = 'Failed to roll dice';
+			error = 'Failed to roll cubes';
 		} finally {
 			rolling = false;
 		}
@@ -254,10 +254,10 @@
 
 	function getDieClasses(die: Die): string {
 		const baseClasses =
-			'w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 border-2 border-white';
+			'w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ring-2 ring-white';
 
 		if (die.locked) {
-			return `${baseClasses} bg-90s-cyan text-black ring-2 ring-white`;
+			return `${baseClasses} bg-90s-cyan text-black`;
 		}
 
 		switch (die.color) {
@@ -537,7 +537,7 @@
 											? 's'
 											: ''})
 									</p>
-									<div class="flex flex-wrap justify-center gap-2">
+									<div class="flex flex-wrap justify-center gap-3">
 										{#each previouslyLockedIds as dieId (dieId)}
 											<div
 												class="bg-90s-cyan/30 border-90s-cyan text-90s-cyan flex h-10 w-10 items-center justify-center rounded-lg border-2 text-lg font-bold transition-all duration-500"
@@ -553,13 +553,13 @@
 								<!-- Show only the just-rolled dice in the play area with staggered reveal -->
 								<div class="mb-6">
 									<p class="text-90s-yellow mb-3 text-center text-sm font-bold">🎲 Rolling...</p>
-									<div class="flex flex-wrap justify-center gap-3">
+									<div class="mx-auto flex max-w-[400px] flex-wrap justify-center gap-5">
 										{#each lastRolledDice as die, index (die.id)}
 											{#if index < revealedDiceCount}
 												<!-- Revealed die -->
 												<div
 													class={getDieClasses(die) +
-														' animate-pop-in scale-110 transform transition-all duration-300'}
+														' animate-pop-in transform transition-all duration-300'}
 												>
 													{getDieEmoji(die)}
 												</div>
@@ -581,7 +581,7 @@
 										<p class="text-90s-purple mb-2 text-center text-sm font-bold">
 											🎲 Dice to roll ({activeDice.length} remaining)
 										</p>
-										<div class="flex flex-wrap justify-center gap-3">
+										<div class="mx-auto flex max-w-[340px] flex-wrap justify-center gap-3">
 											{#each activeDice as die (die.id)}
 												<div
 													class={getDieClasses(die) +
@@ -621,7 +621,7 @@
 										disabled={!canRoll}
 										class="bg-90s-cyan hover:bg-90s-cyan/80 transform rounded-xl border-2 border-white px-8 py-4 text-xl font-bold text-black transition-all hover:scale-105 disabled:cursor-not-allowed disabled:bg-gray-600"
 									>
-										{rolling ? '🎲 Rolling...' : '🎲 Roll Dice'}
+										{rolling ? '🎲 Rolling...' : '🎲 Roll Cubes'}
 									</button>
 									<button
 										onclick={bankPoints}

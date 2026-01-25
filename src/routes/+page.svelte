@@ -10,7 +10,7 @@
 
 	async function createRoom() {
 		if (!hostName) {
-			error = 'Please enter your name';
+			error = 'Please fill in all fields';
 			return;
 		}
 
@@ -175,6 +175,12 @@
 						</li>
 						<li>🏆 First to 100 triggers final round!</li>
 					</ul>
+					<a
+						href="/rules"
+						class="text-90s-cyan hover:text-90s-yellow mt-3 inline-block text-sm font-bold"
+					>
+						📖 Learn more →
+					</a>
 				</div>
 			{:else if mode === 'create'}
 				<!-- Create Room Form -->

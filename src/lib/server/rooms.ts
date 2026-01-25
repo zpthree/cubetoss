@@ -180,23 +180,27 @@ export function rollDice(
 	let rolledAnyGreen = false;
 	let rolledAnyRed = false;
 	const rollResults: string[] = [];
-
+	const rolledDiceSnapshot: Die[] = [];
+	console.log({ gameState });
 	for (const die of gameState.dice) {
 		if (!die.locked) {
 			die.color = rollDie();
 			rollResults.push(die.color);
 			// Use explicit string comparison
 			if (die.color === 'green') {
+				console.log(`[ROLL] Die ${die.id} rolled GREEN - locking and adding point`);
 				rolledAnyGreen = true;
 				die.locked = true;
 				gameState.turnScore += 1;
 			}
 			if (die.color === 'red') {
+				console.log(`[ROLL] Die ${die.id} rolled RED`);
 				rolledAnyRed = true;
 			}
+			rolledDiceSnapshot.push({ id: die.id, color: die.color, locked: die.locked });
 		}
 	}
-
+	console.log({ rolledAnyGreen, rolledAnyRed, rollResults });
 	// Debug logging - show each die's color
 	console.log(
 		`[ROLL] Player ${currentPlayer.name}: dice colors = [${gameState.dice.map((d) => `${d.id}:${d.color}:${d.locked}`).join(', ')}]`
@@ -215,7 +219,7 @@ export function rollDice(
 		console.log(`[ROLL] BUSTING - ending turn`);
 		gameState.turnScore = 0;
 		endTurn(room);
-		broadcastToRoom(code, 'dice-rolled', { room, busted: true });
+		broadcastToRoom(code, 'dice-rolled', { room, busted: true, rolledDiceSnapshot });
 		return { success: true, busted: true, room };
 	}
 
@@ -230,7 +234,7 @@ export function rollDice(
 		gameState.dice = createDice();
 	}
 
-	broadcastToRoom(code, 'dice-rolled', { room, busted: false });
+	broadcastToRoom(code, 'dice-rolled', { room, busted: false, rolledDiceSnapshot });
 	return { success: true, busted: false, room };
 }
 

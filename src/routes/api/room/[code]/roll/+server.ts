@@ -14,13 +14,13 @@ export const POST: RequestHandler = async ({ params, request }) => {
 
 		if (!result.success) {
 			return json(
-				{ success: false, error: 'Cannot roll dice - not your turn or game not in progress' },
+				{ success: false, error: 'Cannot roll cubes - not your turn or game not in progress' },
 				{ status: 400 }
 			);
 		}
 
 		return json({ success: true, busted: result.busted, room: result.room });
 	} catch {
-		return json({ success: false, error: 'Failed to roll dice' }, { status: 500 });
+		return json({ success: false, error: 'Failed to roll cubes' }, { status: 500 });
 	}
 };
