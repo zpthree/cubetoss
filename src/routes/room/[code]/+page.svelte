@@ -376,6 +376,18 @@
 				{/if}
 			</div>
 
+			<!-- Error Display -->
+			{#if error}
+				<div
+					class="mb-6 rounded-lg border-[3px] border-90s-yellow bg-90s-yellow/20 p-4 text-center font-bold text-90s-yellow shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-yellow"
+				>
+					{error}
+					<button onclick={() => (error = '')} class="ml-4 text-white hover:text-90s-yellow"
+						>✕</button
+					>
+				</div>
+			{/if}
+
 			<!-- Game Area -->
 			<div class="grid gap-6 md:grid-cols-3">
 				<!-- Main Game Board -->
@@ -601,18 +613,6 @@
 					</div>
 				</div>
 			</div>
-
-			<!-- Error Display -->
-			{#if error}
-				<div
-					class="mt-4 rounded-lg border-[3px] border-90s-pink bg-90s-pink/20 p-4 text-center font-bold text-90s-pink shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink"
-				>
-					{error}
-					<button onclick={() => (error = '')} class="ml-4 text-white hover:text-90s-yellow"
-						>✕</button
-					>
-				</div>
-			{/if}
 
 			<!-- How to Play (collapsible) -->
 			<details
