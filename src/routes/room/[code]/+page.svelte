@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Room, Die, Player } from '$lib/types';
 	import { onMount, onDestroy } from 'svelte';
+	import confetti from 'canvas-confetti';
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
 	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
 	import ButtonYellow from '$lib/components/ButtonYellow.svelte';
@@ -75,12 +76,9 @@
 
 		eventSource.onmessage = (e) => {
 			// Generic message handler as fallback
-			console.log('SSE message:', e.data);
 		};
 
-		eventSource.onopen = () => {
-			console.log('SSE connected');
-		};
+		eventSource.onopen = () => {};
 
 		eventSource.onerror = (e) => {
 			console.error('SSE error:', e);
@@ -117,11 +115,6 @@
 
 		eventSource.addEventListener('dice-rolled', (e) => {
 			const eventData = JSON.parse(e.data);
-
-			// Debug logging
-			console.log('[DICE-ROLLED] busted:', eventData.busted);
-			console.log('[DICE-ROLLED] currentPlayerIndex:', eventData.room.gameState.currentPlayerIndex);
-			console.log('[DICE-ROLLED] turnScore:', eventData.room.gameState.turnScore);
 
 			// Capture which cube were just rolled (prefer server snapshot to avoid mismatch
 			// when the backend resets cube after an all-green roll or a bust)
@@ -195,7 +188,43 @@
 		eventSource.addEventListener('game-ended', (e) => {
 			const eventData = JSON.parse(e.data);
 			room = eventData.room;
+			// Celebrate with confetti!
+			fireConfetti();
 		});
+	}
+
+	function fireConfetti() {
+		// Respect user's motion preferences
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			return;
+		}
+
+		// Fire confetti from both sides
+		const duration = 10000;
+		const end = Date.now() + duration;
+
+		const colors = ['#FF1493', '#00CED1', '#FFD700']; // pink, cyan, yellow
+
+		(function frame() {
+			confetti({
+				particleCount: 3,
+				angle: 60,
+				spread: 55,
+				origin: { x: 0, y: 0.7 },
+				colors
+			});
+			confetti({
+				particleCount: 3,
+				angle: 120,
+				spread: 55,
+				origin: { x: 1, y: 0.7 },
+				colors
+			});
+
+			if (Date.now() < end) {
+				requestAnimationFrame(frame);
+			}
+		})();
 	}
 
 	async function startGame() {
@@ -311,36 +340,6 @@
 
 <svelte:head>
 	<title>Room {data.roomCode} - Cube Toss!</title>
-	<style>
-		/* Staggered dice reveal animations */
-		@keyframes pop-in {
-			0% {
-				transform: scale(0) rotate(-180deg);
-				opacity: 0;
-			}
-			60% {
-				transform: scale(1.2) rotate(10deg);
-			}
-			100% {
-				transform: scale(1.1) rotate(0deg);
-				opacity: 1;
-			}
-		}
-		.animate-pop-in {
-			animation: pop-in 0.3s ease-out forwards;
-		}
-		@keyframes spin-slow {
-			0% {
-				transform: rotate(0deg);
-			}
-			100% {
-				transform: rotate(360deg);
-			}
-		}
-		.animate-spin-slow {
-			animation: spin-slow 0.5s linear infinite;
-		}
-	</style>
 </svelte:head>
 
 <div class="w-full p-4">
@@ -440,17 +439,18 @@
 					{:else if room.gameState.phase === 'ended'}
 						<!-- Game Over -->
 						<div class="text-center">
-							<h2 class="mb-4 text-3xl font-bold text-90s-yellow">🏆 Game Over!</h2>
+							<h2 class="mb-4 text-3xl font-bold text-90s-yellow">Game Over!</h2>
 							{#if winner}
 								<p class="mb-6 text-2xl font-bold text-90s-pink">
-									{winner.name} wins with {winner.score} points!
+									{winner.name}
+									<span class="font-semibold text-white">wins with {winner.score} points!</span>
 								</p>
 							{/if}
 
 							<div class="mb-6 space-y-2">
 								{#each [...room.players].sort((a, b) => b.score - a.score) as player, i}
 									<div
-										class="flex items-center justify-between rounded-lg border border-90s-pink bg-90s-purple/30 p-3"
+										class="flex items-center justify-between rounded-lg border border-90s-pink bg-90s-pink/10 p-3"
 									>
 										<span class="font-bold text-white">
 											{#if i === 0}🥇{:else if i === 1}🥈{:else if i === 2}🥉{:else}{i + 1}.{/if}
@@ -536,7 +536,7 @@
 									<!-- Active Dice (to roll) -->
 									{#if activeDice.length > 0}
 										<div class="mb-4">
-											<p class="mb-2 text-center text-sm font-bold text-90s-purple">
+											<p class="mb-2 text-center text-sm font-bold text-white">
 												{activeDice.length} cubes remaining
 											</p>
 											<div class="mx-auto flex max-w-[340px] flex-wrap justify-center gap-3">
@@ -595,6 +595,11 @@
 				<div
 					class="rounded-xl border-4 border-90s-cyan bg-black/80 p-4 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-cyan backdrop-blur"
 				>
+					<!-- show target score -->
+					<div class="mb-4 text-center">
+						<h2 class="text-sm font-semibold text-white">Target Score</h2>
+						<p class="text-2xl font-bold text-90s-yellow">{room.gameState.targetScore} points</p>
+					</div>
 					<h2 class="mb-3 font-bold text-90s-cyan">Players</h2>
 					<div class="space-y-2">
 						{#each room.players as player, i}
@@ -624,21 +629,21 @@
 
 			<!-- How to Play (collapsible) -->
 			<details
-				class="mt-6 rounded-xl border-[3px] border-90s-purple bg-black/30 p-4 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-purple"
+				class="mt-6 rounded-xl border-[3px] border-90s-purple bg-black p-4 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-purple"
 			>
-				<summary class="cursor-pointer font-bold text-90s-yellow">📖 How to Play</summary>
+				<summary class="cursor-pointer font-bold text-90s-yellow">How to Play</summary>
 				<div class="mt-3 space-y-2 text-sm text-white">
-					<p class="inline-=flex">
-						<span class="inline-block size-4 rounded-full bg-90s-cyan"></span>
+					<p class="inline-block">
+						<span class="inline-block size-4 rounded-full bg-90s-cyan align-middle"></span>
 						<strong class="text-90s-cyan">Blue dice</strong> = +1 point. These get locked and you keep
 						rolling!
 					</p>
-					<p class="inline-=flex">
-						<span class="inline-block size-4 rounded-full bg-90s-yellow"></span>
+					<p class="inline-block">
+						<span class="inline-block size-4 rounded-full bg-90s-yellow align-middle"></span>
 						<strong class="text-90s-yellow">Yellow dice</strong> = Neutral. Roll again or bank your points.
 					</p>
-					<p class="inline-=flex">
-						<span class="inline-block size-4 rounded-full bg-90s-pink"></span>
+					<p class="inline-block">
+						<span class="inline-block size-4 rounded-full bg-90s-pink align-middle"></span>
 						<strong class="text-90s-pink">Pink dice</strong> = Danger! If you roll ANY pink without rolling
 						at least one blue, you BUST and lose all unbanked points for this turn.
 					</p>
@@ -654,3 +659,34 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	/* Staggered dice reveal animations */
+	@keyframes pop-in {
+		0% {
+			transform: scale(0) rotate(-180deg);
+			opacity: 0;
+		}
+		60% {
+			transform: scale(1.2) rotate(10deg);
+		}
+		100% {
+			transform: scale(1.1) rotate(0deg);
+			opacity: 1;
+		}
+	}
+	.animate-pop-in {
+		animation: pop-in 0.3s ease-out forwards;
+	}
+	@keyframes spin-slow {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+	.animate-spin-slow {
+		animation: spin-slow 0.5s linear infinite;
+	}
+</style>
