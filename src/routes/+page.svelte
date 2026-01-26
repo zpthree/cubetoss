@@ -145,13 +145,13 @@
 				<div class="space-y-4">
 					<button
 						onclick={() => (mode = 'create')}
-						class="bg-90s-pink w-full transform rounded-xl border-b-4 border-pink-800 px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+						class="bg-90s-pink w-full transform cursor-pointer rounded-xl border-b-4 border-pink-800 px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
 					>
 						Create a Room
 					</button>
 					<button
 						onclick={() => (mode = 'join')}
-						class="bg-90s-cyan w-full transform rounded-xl border-b-4 border-teal-700 px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+						class="bg-90s-cyan w-full transform cursor-pointer rounded-xl border-b-4 border-teal-700 px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
 					>
 						Join a Room
 					</button>
