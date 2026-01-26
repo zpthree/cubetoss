@@ -259,6 +259,12 @@
 			&copy; 2026 A game by <a
 				href="https://zachpatrick.com"
 				class="font-medium text-90s-pink underline hover:text-white">Zach Patrick</a
+			>. Inspired by
+			<a
+				href="https://boardgamegeek.com/boardgame/14102/toss-up"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="font-medium text-90s-pink underline hover:text-white">Toss Up!</a
 			>
 		</footer>
 	</div>
