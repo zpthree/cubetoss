@@ -81,44 +81,6 @@
 
 <svelte:head>
 	<title>Cube Toss! - Online Cube Game</title>
-	<style>
-		.bg-90s {
-			background: #54276f;
-		}
-		.text-90s-pink {
-			color: #ff1493;
-		}
-		.text-90s-cyan {
-			color: #00ced1;
-		}
-		.text-90s-yellow {
-			color: #ffd700;
-		}
-		.text-90s-purple {
-			color: #54276f;
-		}
-		.bg-90s-pink {
-			background-color: #ff1493;
-		}
-		.bg-90s-cyan {
-			background-color: #00ced1;
-		}
-		.bg-90s-yellow {
-			background-color: #ffd700;
-		}
-		.bg-90s-purple {
-			background-color: #54276f;
-		}
-		.border-90s-pink {
-			border-color: #ff1493;
-		}
-		.ring-90s-pink {
-			--tw-ring-color: #ff1493;
-		}
-		.ring-90s-cyan {
-			--tw-ring-color: #00ced1;
-		}
-	</style>
 </svelte:head>
 
 <div class="flex items-center justify-center p-4">
@@ -139,45 +101,45 @@
 		</div>
 
 		<!-- Main Card -->
-		<div class="border-90s-pink rounded-2xl border-4 bg-black/80 p-8 shadow-2xl backdrop-blur-lg">
+		<div class="rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-2xl backdrop-blur-lg">
 			{#if mode === 'home'}
 				<!-- Home Screen -->
 				<div class="space-y-4">
 					<button
 						onclick={() => (mode = 'create')}
-						class="bg-90s-pink w-full transform cursor-pointer rounded-xl border-b-4 border-pink-800 px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+						class="w-full transform cursor-pointer rounded-xl border-b-4 border-pink-800 bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
 					>
 						Create a Room
 					</button>
 					<button
 						onclick={() => (mode = 'join')}
-						class="bg-90s-cyan w-full transform cursor-pointer rounded-xl border-b-4 border-teal-700 px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+						class="w-full transform cursor-pointer rounded-xl border-b-4 border-teal-700 bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
 					>
 						Join a Room
 					</button>
 				</div>
 
 				<!-- How to Play -->
-				<div class="bg-90s-purple/30 border-90s-pink mt-8 rounded-xl border-2 p-4">
-					<h3 class="text-90s-yellow mb-2 font-bold">How to Play</h3>
+				<div class="mt-8 rounded-xl border-[3px] border-90s-pink bg-90s-purple/30 p-4">
+					<h3 class="mb-2 font-bold text-90s-yellow">How to Play</h3>
 					<ul class="space-y-1 text-sm text-white">
 						<li class="flex items-center gap-1">
-							<span class="bg-90s-cyan inline-block size-4 rounded-full"></span>
+							<span class="inline-block size-4 rounded-full bg-90s-cyan"></span>
 							<strong class="text-90s-cyan">Green</strong> = +1 point (keep rolling!)
 						</li>
 						<li class="flex items-center gap-1">
-							<span class="bg-90s-yellow inline-block size-4 rounded-full"></span>
+							<span class="inline-block size-4 rounded-full bg-90s-yellow"></span>
 							<strong class="text-90s-yellow">Yellow</strong> = neutral (roll again)
 						</li>
 						<li class="flex items-center gap-1">
-							<span class="bg-90s-pink inline-block size-4 rounded-full"></span>
+							<span class="inline-block size-4 rounded-full bg-90s-pink"></span>
 							<strong class="text-90s-pink">Red</strong> without green = BUST!
 						</li>
 						<li>🏆 First to 100 triggers final round!</li>
 					</ul>
 					<a
 						href="/rules"
-						class="text-90s-cyan hover:text-90s-yellow mt-3 inline-block text-sm font-bold"
+						class="mt-3 inline-block text-sm font-bold text-90s-cyan hover:text-90s-yellow"
 					>
 						📖 Learn more →
 					</a>
@@ -186,12 +148,12 @@
 				<!-- Create Room Form -->
 				<button
 					onclick={() => (mode = 'home')}
-					class="text-90s-cyan hover:text-90s-yellow mb-4 flex items-center gap-1 font-bold"
+					class="mb-4 flex cursor-pointer items-center gap-1 font-bold text-90s-cyan hover:text-90s-yellow"
 				>
 					← Back
 				</button>
 
-				<h2 class="text-90s-pink mb-6 text-2xl font-bold">Create a Room</h2>
+				<h2 class="mb-6 text-2xl font-bold text-90s-pink">Create a Room</h2>
 
 				<form
 					onsubmit={(e) => {
@@ -201,7 +163,7 @@
 					class="space-y-4"
 				>
 					<div>
-						<label for="hostName" class="text-90s-cyan mb-1 block text-sm font-bold">
+						<label for="hostName" class="mb-1 block text-sm font-bold text-90s-cyan">
 							Your Name
 						</label>
 						<input
@@ -209,18 +171,18 @@
 							type="text"
 							bind:value={hostName}
 							placeholder="Enter your name"
-							class="border-90s-pink ring-90s-pink w-full rounded-xl border-2 bg-black/50 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:outline-none"
+							class="w-full rounded-xl border-[3px] border-90s-pink bg-black/50 px-4 py-3 text-white placeholder-gray-400 ring-90s-pink focus:ring-2 focus:outline-none"
 						/>
 					</div>
 
 					{#if error}
-						<p class="text-90s-pink text-sm font-bold">{error}</p>
+						<p class="text-sm font-bold text-90s-pink">{error}</p>
 					{/if}
 
 					<button
 						type="submit"
 						disabled={loading}
-						class="bg-90s-pink w-full rounded-xl border-b-4 border-pink-800 px-6 py-4 font-bold text-white shadow-lg transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+						class="w-full cursor-pointer rounded-xl border-b-4 border-pink-800 bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						{loading ? 'Creating...' : 'Create Room'}
 					</button>
@@ -229,12 +191,12 @@
 				<!-- Join Room Form -->
 				<button
 					onclick={() => (mode = 'home')}
-					class="text-90s-cyan hover:text-90s-yellow mb-4 flex items-center gap-1 font-bold"
+					class="mb-4 flex cursor-pointer items-center gap-1 font-bold text-90s-cyan hover:text-90s-yellow"
 				>
 					← Back
 				</button>
 
-				<h2 class="text-90s-cyan mb-6 text-2xl font-bold">Join a Room</h2>
+				<h2 class="mb-6 text-2xl font-bold text-90s-cyan">Join a Room</h2>
 
 				<form
 					onsubmit={(e) => {
@@ -244,7 +206,7 @@
 					class="space-y-4"
 				>
 					<div>
-						<label for="playerName" class="text-90s-pink mb-1 block text-sm font-bold">
+						<label for="playerName" class="mb-1 block text-sm font-bold text-90s-pink">
 							Your Name
 						</label>
 						<input
@@ -252,12 +214,12 @@
 							type="text"
 							bind:value={playerName}
 							placeholder="Enter your name"
-							class="border-90s-cyan ring-90s-cyan w-full rounded-xl border-2 bg-black/50 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:outline-none"
+							class="w-full rounded-xl border-[3px] border-90s-cyan bg-black/50 px-4 py-3 text-white placeholder-gray-400 ring-90s-cyan focus:ring-2 focus:outline-none"
 						/>
 					</div>
 
 					<div>
-						<label for="roomCode" class="text-90s-pink mb-1 block text-sm font-bold">
+						<label for="roomCode" class="mb-1 block text-sm font-bold text-90s-pink">
 							Room Code
 						</label>
 						<input
@@ -266,18 +228,18 @@
 							bind:value={roomCode}
 							placeholder="XXXXXX"
 							maxlength="6"
-							class="border-90s-cyan text-90s-yellow ring-90s-cyan w-full rounded-xl border-2 bg-black/50 px-4 py-3 text-center font-mono text-2xl tracking-widest uppercase placeholder-gray-400 focus:ring-2 focus:outline-none"
+							class="w-full rounded-xl border-[3px] border-90s-cyan bg-black/50 px-4 py-3 text-center font-mono text-2xl tracking-widest text-90s-yellow uppercase placeholder-gray-400 ring-90s-cyan focus:ring-2 focus:outline-none"
 						/>
 					</div>
 
 					{#if error}
-						<p class="text-90s-pink text-sm font-bold">{error}</p>
+						<p class="text-sm font-bold text-90s-pink">{error}</p>
 					{/if}
 
 					<button
 						type="submit"
 						disabled={loading}
-						class="bg-90s-cyan w-full rounded-xl border-b-4 border-teal-700 px-6 py-4 font-bold text-black shadow-lg transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+						class="w-full cursor-pointer rounded-xl border-b-4 border-teal-700 bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						{loading ? 'Joining...' : 'Join Room'}
 					</button>

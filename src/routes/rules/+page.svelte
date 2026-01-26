@@ -1,40 +1,5 @@
 <svelte:head>
 	<title>How to Play - Cube Toss!</title>
-	<style>
-		.bg-90s {
-			background: #54276f;
-		}
-		.text-90s-pink {
-			color: #ff1493;
-		}
-		.text-90s-cyan {
-			color: #00ced1;
-		}
-		.text-90s-yellow {
-			color: #ffd700;
-		}
-		.text-90s-purple {
-			color: #54276f;
-		}
-		.bg-90s-pink {
-			background-color: #ff1493;
-		}
-		.bg-90s-cyan {
-			background-color: #00ced1;
-		}
-		.bg-90s-yellow {
-			background-color: #ffd700;
-		}
-		.bg-90s-purple {
-			background-color: #54276f;
-		}
-		.border-90s-pink {
-			border-color: #ff1493;
-		}
-		.border-90s-cyan {
-			border-color: #00ced1;
-		}
-	</style>
 </svelte:head>
 
 <div class="p-4">
@@ -55,15 +20,15 @@
 		</div>
 
 		<!-- Back link -->
-		<a href="/" class="text-90s-cyan hover:text-90s-yellow mb-6 inline-block font-bold">
+		<a href="/" class="mb-6 inline-block font-bold text-90s-cyan hover:text-90s-yellow">
 			← Back to Home
 		</a>
 
 		<!-- Rules Card -->
-		<div class="border-90s-pink rounded-2xl border-4 bg-black/80 p-8 shadow-2xl backdrop-blur-lg">
+		<div class="rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-2xl backdrop-blur-lg">
 			<!-- Overview -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Overview</h2>
+				<h2 class="mb-4 text-2xl font-bold text-90s-yellow">Overview</h2>
 				<p class="text-white">
 					Cube Toss is a cube game of risk and reward. Roll cubes to score points, but watch out for
 					red cubes that can bust your turn! The first player to reach 100 points triggers the final
@@ -73,13 +38,13 @@
 
 			<!-- The Cubes -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">The Cubes</h2>
+				<h2 class="mb-4 text-2xl font-bold text-90s-yellow">The Cubes</h2>
 				<p class="mb-4 text-white">You roll 10 cubes. Each cube can land on one of three colors:</p>
 				<ul class="space-y-3 text-white">
 					<li class="flex items-start gap-3">
-						<span class="bg-90s-cyan mt-1 inline-block size-6 flex-shrink-0 rounded-full"></span>
+						<span class="mt-1 inline-block size-6 flex-shrink-0 rounded-full bg-90s-cyan"></span>
 						<div>
-							<strong class="text-90s-cyan text-lg">Green</strong>
+							<strong class="text-lg text-90s-cyan">Green</strong>
 							<p class="text-sm text-gray-300">
 								Worth +1 point! Green cubes get "locked" and added to your turn score. You keep
 								rolling the remaining cubes.
@@ -87,18 +52,18 @@
 						</div>
 					</li>
 					<li class="flex items-start gap-3">
-						<span class="bg-90s-yellow mt-1 inline-block size-6 flex-shrink-0 rounded-full"></span>
+						<span class="mt-1 inline-block size-6 flex-shrink-0 rounded-full bg-90s-yellow"></span>
 						<div>
-							<strong class="text-90s-yellow text-lg">Yellow</strong>
+							<strong class="text-lg text-90s-yellow">Yellow</strong>
 							<p class="text-sm text-gray-300">
 								Neutral - no points, but no penalty. These cubes stay in play for your next roll.
 							</p>
 						</div>
 					</li>
 					<li class="flex items-start gap-3">
-						<span class="bg-90s-pink mt-1 inline-block size-6 flex-shrink-0 rounded-full"></span>
+						<span class="mt-1 inline-block size-6 flex-shrink-0 rounded-full bg-90s-pink"></span>
 						<div>
-							<strong class="text-90s-pink text-lg">Red</strong>
+							<strong class="text-lg text-90s-pink">Red</strong>
 							<p class="text-sm text-gray-300">
 								Danger! If you roll ANY red cubes without also rolling at least one green, you
 								<strong>BUST</strong> and lose all unbanked points for this turn.
@@ -110,7 +75,7 @@
 
 			<!-- Your Turn -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Your Turn</h2>
+				<h2 class="mb-4 text-2xl font-bold text-90s-yellow">Your Turn</h2>
 				<ol class="list-inside list-decimal space-y-2 text-white">
 					<li>Roll all available cubes.</li>
 					<li>Green cubes are locked and added to your turn score.</li>
@@ -128,7 +93,7 @@
 
 			<!-- Banking -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Banking</h2>
+				<h2 class="mb-4 text-2xl font-bold text-90s-yellow">Banking</h2>
 				<p class="text-white">
 					When you bank, your turn score is added to your total score safely. Your turn ends and the
 					next player goes. Banking is the only way to secure your points - if you bust, you lose
@@ -138,7 +103,7 @@
 
 			<!-- Winning -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Winning</h2>
+				<h2 class="mb-4 text-2xl font-bold text-90s-yellow">Winning</h2>
 				<p class="mb-4 text-white">
 					The first player to reach <strong class="text-90s-cyan">100 points</strong> triggers the
 					<strong class="text-90s-yellow">Final Round</strong>!
@@ -153,7 +118,7 @@
 			<div class="mt-8 text-center">
 				<a
 					href="/"
-					class="bg-90s-cyan inline-block rounded-xl border-b-4 border-cyan-800 px-8 py-4 text-xl font-bold text-white shadow-lg transition-all hover:brightness-110"
+					class="inline-block rounded-xl border-b-4 border-cyan-800 bg-90s-cyan px-8 py-4 text-xl font-bold text-white shadow-lg transition-all hover:brightness-110"
 				>
 					🎲 Play Now!
 				</a>
