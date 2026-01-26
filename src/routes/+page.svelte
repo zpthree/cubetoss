@@ -259,6 +259,7 @@
 		<footer class="mt-4 text-center text-sm text-white/50">
 			&copy; 2026 A game by <a
 				href="https://zachpatrick.com"
+				target="_blank"
 				class="font-medium text-90s-pink underline hover:text-white">Zach Patrick</a
 			>. Inspired by
 			<a
