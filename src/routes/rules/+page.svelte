@@ -63,7 +63,7 @@
 		<div class="border-90s-pink rounded-2xl border-4 bg-black/80 p-8 shadow-2xl backdrop-blur-lg">
 			<!-- Overview -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">🎯 Overview</h2>
+				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Overview</h2>
 				<p class="text-white">
 					Cube Toss is a cube game of risk and reward. Roll cubes to score points, but watch out for
 					red cubes that can bust your turn! The first player to reach 100 points triggers the final
@@ -73,7 +73,7 @@
 
 			<!-- The Cubes -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">🎲 The Cubes</h2>
+				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">The Cubes</h2>
 				<p class="mb-4 text-white">You roll 10 cubes. Each cube can land on one of three colors:</p>
 				<ul class="space-y-3 text-white">
 					<li class="flex items-start gap-3">
@@ -110,7 +110,7 @@
 
 			<!-- Your Turn -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">🔄 Your Turn</h2>
+				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Your Turn</h2>
 				<ol class="list-inside list-decimal space-y-2 text-white">
 					<li>Roll all available cubes.</li>
 					<li>Green cubes are locked and added to your turn score.</li>
@@ -128,7 +128,7 @@
 
 			<!-- Banking -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">💰 Banking</h2>
+				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Banking</h2>
 				<p class="text-white">
 					When you bank, your turn score is added to your total score safely. Your turn ends and the
 					next player goes. Banking is the only way to secure your points - if you bust, you lose
@@ -138,7 +138,7 @@
 
 			<!-- Winning -->
 			<section class="mb-8">
-				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">🏆 Winning</h2>
+				<h2 class="text-90s-yellow mb-4 text-2xl font-bold">Winning</h2>
 				<p class="mb-4 text-white">
 					The first player to reach <strong class="text-90s-cyan">100 points</strong> triggers the
 					<strong class="text-90s-yellow">Final Round</strong>!
@@ -149,28 +149,15 @@
 				</p>
 			</section>
 
-			<!-- Tips -->
-			<section class="border-90s-cyan rounded-xl border-2 bg-black/30 p-4">
-				<h2 class="text-90s-cyan mb-3 text-xl font-bold">💡 Strategy Tips</h2>
-				<ul class="space-y-2 text-sm text-white">
-					<li>
-						• The more cubes you have locked, the fewer you roll - less chance of green to save you
-						from red!
-					</li>
-					<li>• Banking early and often is safer, but riskier plays can pay off big</li>
-					<li>• Watch your opponents' scores - sometimes you need to take risks to catch up</li>
-				</ul>
-			</section>
-		</div>
-
-		<!-- Play button -->
-		<div class="mt-8 text-center">
-			<a
-				href="/"
-				class="bg-90s-pink inline-block rounded-xl border-b-4 border-pink-800 px-8 py-4 text-xl font-bold text-white shadow-lg transition-all hover:brightness-110"
-			>
-				🎲 Play Now!
-			</a>
+			<!-- Play button -->
+			<div class="mt-8 text-center">
+				<a
+					href="/"
+					class="bg-90s-cyan inline-block rounded-xl border-b-4 border-cyan-800 px-8 py-4 text-xl font-bold text-white shadow-lg transition-all hover:brightness-110"
+				>
+					🎲 Play Now!
+				</a>
+			</div>
 		</div>
 	</div>
 </div>
