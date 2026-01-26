@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Room, Die, Player } from '$lib/types';
 	import { onMount, onDestroy } from 'svelte';
+	import ButtonPink from '$lib/components/ButtonPink.svelte';
 
 	let { data } = $props();
 
@@ -398,13 +399,12 @@
 								{#if room.players.length < 2}
 									<p class="mb-4 font-bold text-90s-yellow">Need at least 2 players to start</p>
 								{/if}
-								<button
+								<ButtonPink
 									onclick={startGame}
 									disabled={!canStart}
-									class=":not(:disabled):hover:brightness-110 rounded-xl border-b-4 border-pink-800 bg-90s-pink px-8 py-4 text-xl font-bold text-white transition-all disabled:cursor-not-allowed disabled:bg-pink-900"
+									_class="
+								!w-auto">Start Game</ButtonPink
 								>
-									Start Game
-								</button>
 							{:else}
 								<p class="text-90s-cyan">Waiting for host to start the game...</p>
 							{/if}

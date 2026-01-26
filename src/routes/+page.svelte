@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Room } from '$lib/types';
-
+	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
+	import ButtonPink from '$lib/components/ButtonPink.svelte';
 	let mode: 'home' | 'create' | 'join' = $state('home');
 	let hostName = $state('');
 	let playerName = $state('');
@@ -105,18 +106,8 @@
 			{#if mode === 'home'}
 				<!-- Home Screen -->
 				<div class="space-y-4">
-					<button
-						onclick={() => (mode = 'create')}
-						class="w-full transform cursor-pointer rounded-xl border-b-4 border-pink-800 bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
-					>
-						Create a Room
-					</button>
-					<button
-						onclick={() => (mode = 'join')}
-						class="w-full transform cursor-pointer rounded-xl border-b-4 border-teal-700 bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
-					>
-						Join a Room
-					</button>
+					<ButtonPink onclick={() => (mode = 'create')}>Create a Room</ButtonPink>
+					<ButtonCyan onclick={() => (mode = 'join')}>Join a Room</ButtonCyan>
 				</div>
 
 				<!-- How to Play -->
@@ -179,13 +170,9 @@
 						<p class="text-sm font-bold text-90s-pink">{error}</p>
 					{/if}
 
-					<button
-						type="submit"
-						disabled={loading}
-						class="w-full cursor-pointer rounded-xl border-b-4 border-pink-800 bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+					<ButtonPink type="submit" disabled={loading} onclick={() => (mode = 'create')}
+						>{loading ? 'Creating...' : 'Create Room'}</ButtonPink
 					>
-						{loading ? 'Creating...' : 'Create Room'}
-					</button>
 				</form>
 			{:else if mode === 'join'}
 				<!-- Join Room Form -->
@@ -236,13 +223,9 @@
 						<p class="text-sm font-bold text-90s-pink">{error}</p>
 					{/if}
 
-					<button
-						type="submit"
-						disabled={loading}
-						class="w-full cursor-pointer rounded-xl border-b-4 border-teal-700 bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
-					>
+					<ButtonCyan type="submit" disabled={loading}>
 						{loading ? 'Joining...' : 'Join Room'}
-					</button>
+					</ButtonCyan>
 				</form>
 			{/if}
 		</div>

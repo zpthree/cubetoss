@@ -1,3 +1,7 @@
+<script>
+	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
+</script>
+
 <svelte:head>
 	<title>How to Play - Cube Toss!</title>
 </svelte:head>
@@ -116,12 +120,7 @@
 
 			<!-- Play button -->
 			<div class="mt-8 text-center">
-				<a
-					href="/"
-					class="inline-block rounded-xl border-b-4 border-cyan-800 bg-90s-cyan px-8 py-4 text-xl font-bold text-white shadow-lg transition-all hover:brightness-110"
-				>
-					🎲 Play Now!
-				</a>
+				<ButtonCyan href="/">Play Now!</ButtonCyan>
 			</div>
 		</div>
 	</div>
