@@ -19,6 +19,7 @@
 	let revealedDiceCount = $state(0); // For staggered cube reveal animation
 	let displayedTurnScore = $state(0); // Delayed score display for animation
 	let copied = $state(false); // Track clipboard copy feedback
+	let copiedLink = $state(false); // Track shareable link copy feedback
 	let eventSource: EventSource | null = null;
 
 	// Derived state
@@ -265,6 +266,13 @@
 		setTimeout(() => (copied = false), 2000);
 	}
 
+	function copyShareLink() {
+		const shareUrl = `${window.location.origin}/join/${data.roomCode}`;
+		navigator.clipboard.writeText(shareUrl);
+		copiedLink = true;
+		setTimeout(() => (copiedLink = false), 2000);
+	}
+
 	function getDieClasses(die: Die): string {
 		const baseClasses =
 			'w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ring-2 ring-white';
@@ -400,10 +408,18 @@
 						<!-- Waiting Room -->
 						<div class="text-center">
 							<h2 class="mb-4 text-2xl font-bold text-90s-pink">Waiting for Players</h2>
-							<p class="mb-6 text-white">
-								Share the room code with your friends:
-								<span class="font-mono text-xl text-90s-yellow">{data.roomCode}</span>
-							</p>
+							<p class="mb-2 text-white">Share this link with your friends:</p>
+							<button
+								onclick={copyShareLink}
+								class="mb-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-90s-yellow bg-90s-yellow/10 px-4 py-2 font-mono text-sm text-90s-yellow transition-all hover:bg-90s-yellow/20"
+							>
+								<span class="truncate"
+									>{typeof window !== 'undefined'
+										? window.location.origin
+										: ''}/join/{data.roomCode}</span
+								>
+								<span class="shrink-0 text-lg">{copiedLink ? '✓' : '📋'}</span>
+							</button>
 
 							<div class="mb-6 text-90s-cyan">
 								{room.players.length} player{room.players.length !== 1 ? 's' : ''} in lobby
