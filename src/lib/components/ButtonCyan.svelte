@@ -19,7 +19,7 @@
 {#if href}
 	<a
 		{href}
-		class="inline-block transform cursor-pointer rounded-xl border-b-4 border-teal-700 bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+		class="inline-block transform cursor-pointer rounded-xl border-b-4 border-[color-mix(in_srgb,var(--color-90s-cyan)_70%,black)] bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
 	>
 		{@render children()}
 	</a>
@@ -28,7 +28,7 @@
 		{type}
 		{onclick}
 		{disabled}
-		class="w-full transform cursor-pointer rounded-xl border-b-4 border-teal-700 bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+		class="w-full transform cursor-pointer rounded-xl border-b-4 border-[color-mix(in_srgb,var(--color-90s-cyan)_70%,black)] bg-90s-cyan px-6 py-4 font-bold text-black shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
 	>
 		{@render children()}
 	</button>

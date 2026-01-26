@@ -2,6 +2,8 @@
 	import type { Room, Die, Player } from '$lib/types';
 	import { onMount, onDestroy } from 'svelte';
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
+	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
+	import ButtonYellow from '$lib/components/ButtonYellow.svelte';
 
 	let { data } = $props();
 
@@ -559,20 +561,12 @@
 							<!-- Action Buttons -->
 							{#if isMyTurn}
 								<div class="mx-auto grid max-w-sm grid-cols-2 gap-4">
-									<button
-										onclick={rollDice}
-										disabled={!canRoll || showingRoll}
-										class="transform cursor-pointer rounded-xl border-[3px] border-white bg-90s-cyan p-4 text-sm font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-cyan-600 md:text-lg md:hover:scale-105 md:disabled:hover:scale-100"
-									>
+									<ButtonCyan onclick={rollDice} disabled={!canRoll || showingRoll}>
 										{showingRoll ? 'Rolling...' : 'Roll'}
-									</button>
-									<button
-										onclick={bankPoints}
-										disabled={!canBank || showingRoll}
-										class="transform cursor-pointer rounded-xl border-[3px] border-white bg-90s-yellow p-4 text-sm font-semibold text-black transition-all disabled:cursor-not-allowed disabled:opacity-90 md:text-lg md:hover:scale-105 md:disabled:hover:scale-100"
-									>
+									</ButtonCyan>
+									<ButtonYellow onclick={bankPoints} disabled={!canBank || showingRoll}>
 										Bank {showingRoll ? displayedTurnScore : room.gameState.turnScore} pts
-									</button>
+									</ButtonYellow>
 								</div>
 							{:else}
 								<p class="text-center text-90s-purple">
