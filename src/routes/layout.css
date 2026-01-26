@@ -25,20 +25,6 @@ body {
 	}
 }
 
-/* Reduced visual effects - manual toggle or system preference */
-.reduced-effects *,
-.reduced-effects {
-	box-shadow: none !important;
-	text-shadow: none !important;
-}
-
-.reduced-effects *,
-.reduced-effects {
-	animation-duration: 0.01ms !important;
-	animation-iteration-count: 1 !important;
-	transition-duration: 0.01ms !important;
-}
-
 /* System preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
 	*,
@@ -48,45 +34,5 @@ body {
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
-	}
-}
-
-/* High contrast mode */
-.high-contrast {
-	--color-90s-pink: #ff69b4;
-	--color-90s-cyan: #00ffff;
-	--color-90s-yellow: #ffff00;
-	--color-90s-purple: #9932cc;
-}
-
-.high-contrast * {
-	border-color: currentColor !important;
-}
-
-.high-contrast .bg-black\/80,
-.high-contrast .bg-black\/50,
-.high-contrast .bg-black\/40,
-.high-contrast .bg-black\/30 {
-	background-color: black !important;
-}
-
-.high-contrast .text-white,
-.high-contrast .text-white\/70,
-.high-contrast .text-white\/50 {
-	color: white !important;
-}
-
-.high-contrast .bg-90s-pink .text-white,
-.high-contrast .bg-90s-pink.text-white {
-	color: black !important;
-}
-
-/* System preference for high contrast */
-@media (prefers-contrast: more) {
-	:root {
-		--color-90s-pink: #ff69b4;
-		--color-90s-cyan: #00ffff;
-		--color-90s-yellow: #ffff00;
-		--color-90s-purple: #9932cc;
 	}
 }
