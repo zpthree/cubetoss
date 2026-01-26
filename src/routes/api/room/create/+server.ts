@@ -11,7 +11,8 @@ export const POST: RequestHandler = async ({ request }) => {
 			return json({ success: false, error: 'Name is required' }, { status: 400 });
 		}
 
-		const { room, playerId } = createRoom(body.hostName);
+		const targetScore = body.targetScore ?? 100;
+		const { room, playerId } = createRoom(body.hostName, targetScore);
 
 		return json({
 			success: true,

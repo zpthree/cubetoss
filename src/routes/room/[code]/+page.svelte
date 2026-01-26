@@ -630,7 +630,7 @@
 					</p>
 					<p>💰 <strong>Bank</strong> your points to add them to your score safely.</p>
 					<p>
-						🏆 First player to reach <strong class="text-90s-cyan">100 points</strong> triggers the final
+						🏆 First player to reach <strong class="text-90s-cyan">{room.gameState.targetScore} points</strong> triggers the final
 						round!
 					</p>
 					<p>⚡ In the final round, everyone gets one last turn to beat the high score.</p>

@@ -22,6 +22,7 @@ export interface GameState {
 	currentPlayerIndex: number;
 	dice: Die[];
 	turnScore: number;
+	targetScore: number;
 	finalRoundTriggeredBy: string | null; // Player ID who triggered final round
 	playersHadFinalTurn: string[]; // Player IDs who have had their final turn
 	winner: string | null; // Player ID of winner
@@ -51,6 +52,7 @@ export interface RoomEvent {
 // API Request/Response types
 export interface CreateRoomRequest {
 	hostName: string;
+	targetScore?: number;
 }
 
 export interface CreateRoomResponse {

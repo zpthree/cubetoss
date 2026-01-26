@@ -30,12 +30,13 @@ export function generatePlayerId(): string {
 }
 
 // Create initial game state
-export function createInitialGameState(): GameState {
+export function createInitialGameState(targetScore: number = 100): GameState {
 	return {
 		phase: 'waiting',
 		currentPlayerIndex: 0,
 		dice: createDice(),
 		turnScore: 0,
+		targetScore,
 		finalRoundTriggeredBy: null,
 		playersHadFinalTurn: [],
 		winner: null
@@ -61,7 +62,7 @@ export function rollDie(): DieColor {
 }
 
 // Create a new room
-export function createRoom(hostName: string): { room: Room; playerId: string } {
+export function createRoom(hostName: string, targetScore: number = 100): { room: Room; playerId: string } {
 	const code = generateRoomCode();
 	const playerId = generatePlayerId();
 
@@ -77,7 +78,7 @@ export function createRoom(hostName: string): { room: Room; playerId: string } {
 	const room: Room = {
 		code,
 		players: [host],
-		gameState: createInitialGameState(),
+		gameState: createInitialGameState(targetScore),
 		createdAt: Date.now(),
 		lastActivity: Date.now()
 	};
@@ -237,7 +238,7 @@ export function bankPoints(code: string, playerId: string): { success: boolean; 
 	currentPlayer.score += gameState.turnScore;
 
 	// Check for final round trigger
-	if (currentPlayer.score >= 100 && !gameState.finalRoundTriggeredBy) {
+	if (currentPlayer.score >= gameState.targetScore && !gameState.finalRoundTriggeredBy) {
 		gameState.finalRoundTriggeredBy = currentPlayer.id;
 		gameState.phase = 'final-round';
 		gameState.playersHadFinalTurn.push(currentPlayer.id);

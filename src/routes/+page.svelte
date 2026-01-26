@@ -5,6 +5,7 @@
 	let hostName = $state('');
 	let playerName = $state('');
 	let roomCode = $state('');
+	let targetScore = $state(100);
 	let error = $state('');
 	let loading = $state(false);
 
@@ -21,7 +22,7 @@
 			const response = await fetch('/api/room/create', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ hostName })
+				body: JSON.stringify({ hostName, targetScore })
 			});
 
 			const data = await response.json();
@@ -167,6 +168,22 @@
 						/>
 					</div>
 
+					<div>
+						<label for="targetScore" class="mb-1 block text-sm font-bold text-90s-cyan">
+							Points to Win
+						</label>
+						<select
+							id="targetScore"
+							bind:value={targetScore}
+							class="w-full rounded-xl border-[3px] border-90s-pink bg-black/50 px-4 py-3 text-white ring-90s-pink focus:ring-2 focus:outline-none"
+						>
+							<option value={50}>50 points (lighting round)</option>
+							<option value={100}>100 points (standard)</option>
+							<option value={150}>150 points (whoa man)</option>
+							<option value={200}>200 points (what are ya nuts)</option>
+						</select>
+					</div>
+
 					{#if error}
 						<p class="text-sm font-bold text-90s-pink">{error}</p>
 					{/if}
@@ -238,5 +255,11 @@
 		>
 			No account needed • Rooms expire after 2 hours
 		</p>
+		<footer class="mt-4 text-center text-sm text-white/50">
+			&copy; 2026 A game by <a
+				href="https://zachpatrick.com"
+				class="font-medium text-90s-pink underline hover:text-white">Zach Patrick</a
+			>
+		</footer>
 	</div>
 </div>
