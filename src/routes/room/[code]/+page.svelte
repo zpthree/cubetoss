@@ -380,7 +380,7 @@
 			<div class="grid gap-6 md:grid-cols-3">
 				<!-- Main Game Board -->
 				<div
-					class="rounded-xl border-4 border-90s-pink bg-black/80 p-6 backdrop-blur md:col-span-2"
+					class="rounded-xl border-4 border-90s-pink bg-black/80 p-6 shadow-[0_0_20px_rgba(255,20,147,0.5)] backdrop-blur md:col-span-2"
 				>
 					{#if room.gameState.phase === 'waiting'}
 						<!-- Waiting Room -->
@@ -459,34 +459,16 @@
 
 							<div class="h-[280px]">
 								<!-- Always show banked dice at the top -->
-								{#if lockedDice.length > 0 && !showingRoll}
+								{#if (showingRoll ? previouslyLockedIds.length : lockedDice.length) > 0}
+									{@const lockedCount = showingRoll
+										? previouslyLockedIds.length
+										: lockedDice.length}
 									<div class="mb-4 transition-all duration-500">
 										<p class="mb-2 text-center text-sm font-bold text-90s-cyan">
-											🏦 Locked this round ({lockedDice.length} point{lockedDice.length !== 1
-												? 's'
-												: ''})
+											🔒 Locked this round ({lockedCount} point{lockedCount !== 1 ? 's' : ''})
 										</p>
 										<div class="flex flex-wrap justify-center gap-2">
-											{#each lockedDice as die (die.id)}
-												<div
-													class="flex h-10 w-10 items-center justify-center rounded-lg border-[3px] border-90s-cyan bg-90s-cyan/30 text-lg font-bold text-90s-cyan transition-all duration-500"
-												>
-													✓
-												</div>
-											{/each}
-										</div>
-									</div>
-								{:else if previouslyLockedIds.length > 0}
-									<!-- Show previously banked dice while displaying roll results -->
-									<div class="mb-4 transition-all duration-500">
-										<p class="mb-2 text-center text-sm font-bold text-90s-cyan">
-											🏦 Banked this turn ({previouslyLockedIds.length} point{previouslyLockedIds.length !==
-											1
-												? 's'
-												: ''})
-										</p>
-										<div class="flex flex-wrap justify-center gap-3">
-											{#each previouslyLockedIds as dieId (dieId)}
+											{#each Array(lockedCount) as _, i (i)}
 												<div
 													class="flex h-10 w-10 items-center justify-center rounded-lg border-[3px] border-90s-cyan bg-90s-cyan/30 text-lg font-bold text-90s-cyan transition-all duration-500"
 												>
@@ -500,7 +482,7 @@
 								{#if showingRoll && lastRolledDice.length > 0}
 									<!-- Show only the just-rolled dice in the play area with staggered reveal -->
 									<div class="mb-6">
-										<p class="mb-3 text-center text-sm font-bold text-90s-yellow">🎲 Rolling...</p>
+										<p class="mb-3 text-center text-sm font-bold text-90s-yellow">Rolling...</p>
 										<div class="mx-auto flex max-w-[400px] flex-wrap justify-center gap-5">
 											{#each lastRolledDice as die, index (die.id)}
 												{#if index < revealedDiceCount}
@@ -527,7 +509,7 @@
 									{#if activeDice.length > 0}
 										<div class="mb-4">
 											<p class="mb-2 text-center text-sm font-bold text-90s-purple">
-												🎲 Cubes to roll ({activeDice.length} remaining)
+												{activeDice.length} cubes remaining
 											</p>
 											<div class="mx-auto flex max-w-[340px] flex-wrap justify-center gap-3">
 												{#each activeDice as die (die.id)}
@@ -567,17 +549,17 @@
 								<div class="mx-auto grid max-w-sm grid-cols-2 gap-4">
 									<button
 										onclick={rollDice}
-										disabled={!canRoll}
+										disabled={!canRoll || showingRoll}
 										class="transform cursor-pointer rounded-xl border-[3px] border-white bg-90s-cyan p-4 text-sm font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-cyan-600 md:text-lg md:hover:scale-105 md:disabled:hover:scale-100"
 									>
-										{rolling ? 'Rolling...' : 'Roll'}
+										{showingRoll ? 'Rolling...' : 'Roll'}
 									</button>
 									<button
 										onclick={bankPoints}
-										disabled={!canBank}
-										class="transform cursor-pointer rounded-xl border-[3px] border-white bg-90s-yellow p-4 text-sm font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-yellow-500 md:text-lg md:hover:scale-105 md:disabled:hover:scale-100"
+										disabled={!canBank || showingRoll}
+										class="transform cursor-pointer rounded-xl border-[3px] border-white bg-90s-yellow p-4 text-sm font-semibold text-black transition-all disabled:cursor-not-allowed disabled:opacity-90 md:text-lg md:hover:scale-105 md:disabled:hover:scale-100"
 									>
-										Bank {room.gameState.turnScore} pts
+										Bank {showingRoll ? displayedTurnScore : room.gameState.turnScore} pts
 									</button>
 								</div>
 							{:else}
@@ -590,7 +572,9 @@
 				</div>
 
 				<!-- Players List -->
-				<div class="rounded-xl border-4 border-90s-cyan bg-black/80 p-4 backdrop-blur">
+				<div
+					class="rounded-xl border-4 border-90s-cyan bg-black/80 p-4 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-cyan backdrop-blur"
+				>
 					<h2 class="mb-3 font-bold text-90s-cyan">Players</h2>
 					<div class="space-y-2">
 						{#each room.players as player, i}
@@ -621,7 +605,7 @@
 			<!-- Error Display -->
 			{#if error}
 				<div
-					class="mt-4 rounded-lg border-[3px] border-90s-pink bg-90s-pink/20 p-4 text-center font-bold text-90s-pink"
+					class="mt-4 rounded-lg border-[3px] border-90s-pink bg-90s-pink/20 p-4 text-center font-bold text-90s-pink shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink"
 				>
 					{error}
 					<button onclick={() => (error = '')} class="ml-4 text-white hover:text-90s-yellow"
@@ -631,7 +615,9 @@
 			{/if}
 
 			<!-- How to Play (collapsible) -->
-			<details class="mt-6 rounded-xl border-[3px] border-90s-purple bg-black/30 p-4">
+			<details
+				class="mt-6 rounded-xl border-[3px] border-90s-purple bg-black/30 p-4 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-purple"
+			>
 				<summary class="cursor-pointer font-bold text-90s-yellow">📖 How to Play</summary>
 				<div class="mt-3 space-y-2 text-sm text-white">
 					<p class="inline-=flex">

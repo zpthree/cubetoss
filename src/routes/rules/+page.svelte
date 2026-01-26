@@ -29,7 +29,9 @@
 		</a>
 
 		<!-- Rules Card -->
-		<div class="rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-2xl backdrop-blur-lg">
+		<div
+			class="rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink"
+		>
 			<!-- Overview -->
 			<section class="mb-8">
 				<h2 class="mb-4 text-2xl font-bold text-90s-yellow">Overview</h2>

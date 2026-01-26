@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Room } from '$lib/types';
 	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
 	let mode: 'home' | 'create' | 'join' = $state('home');
@@ -102,7 +101,9 @@
 		</div>
 
 		<!-- Main Card -->
-		<div class="rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-2xl backdrop-blur-lg">
+		<div
+			class="h-full w-full rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink md:h-[440px] md:w-[400px]"
+		>
 			{#if mode === 'home'}
 				<!-- Home Screen -->
 				<div class="space-y-4">
@@ -112,18 +113,18 @@
 
 				<!-- How to Play -->
 				<div class="mt-8 rounded-xl border-[3px] border-90s-pink bg-90s-purple/30 p-4">
-					<h3 class="mb-2 font-bold text-90s-yellow">How to Play</h3>
+					<h2 class="mb-2 font-bold text-90s-yellow">How to Play</h2>
 					<ul class="space-y-1 text-sm text-white">
-						<li class="flex items-center gap-1">
-							<span class="inline-block size-4 rounded-full bg-90s-cyan"></span>
+						<li class="inline-block">
+							<span class="inline-block size-4 rounded-full bg-90s-cyan align-middle"></span>
 							<strong class="text-90s-cyan">Green</strong> = +1 point (keep rolling!)
 						</li>
-						<li class="flex items-center gap-1">
-							<span class="inline-block size-4 rounded-full bg-90s-yellow"></span>
+						<li class="inline-block">
+							<span class="inline-block size-4 rounded-full bg-90s-yellow align-middle"></span>
 							<strong class="text-90s-yellow">Yellow</strong> = neutral (roll again)
 						</li>
-						<li class="flex items-center gap-1">
-							<span class="inline-block size-4 rounded-full bg-90s-pink"></span>
+						<li class="inline-block">
+							<span class="inline-block size-4 rounded-full bg-90s-pink align-middle"></span>
 							<strong class="text-90s-pink">Red</strong> without green = BUST!
 						</li>
 						<li>🏆 First to 100 triggers final round!</li>
