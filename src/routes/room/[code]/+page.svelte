@@ -14,6 +14,7 @@
 	let previouslyLockedIds: number[] = $state([]); // Track cube that were locked before the roll
 	let lastRolledDice: Die[] = $state([]); // The cube that were just rolled (snapshot)
 	let revealedDiceCount = $state(0); // For staggered cube reveal animation
+	let displayedTurnScore = $state(0); // Delayed score display for animation
 	let eventSource: EventSource | null = null;
 
 	// Derived state
@@ -105,6 +106,7 @@
 		eventSource.addEventListener('game-started', (e) => {
 			const eventData = JSON.parse(e.data);
 			room = eventData.room;
+			displayedTurnScore = 0;
 		});
 
 		eventSource.addEventListener('dice-rolled', (e) => {
@@ -142,6 +144,8 @@
 					() => {
 						showingRoll = false;
 						revealedDiceCount = 0;
+						// Update displayed score after animation completes
+						displayedTurnScore = room?.gameState.turnScore ?? 0;
 						// Update previouslyLockedIds after the animation
 						previouslyLockedIds =
 							room?.gameState.dice.filter((d) => d.locked).map((d) => d.id) ?? [];
@@ -162,6 +166,8 @@
 					() => {
 						showingRoll = false;
 						revealedDiceCount = 0;
+						// Update displayed score after animation completes (will be 0 on bust)
+						displayedTurnScore = room?.gameState.turnScore ?? 0;
 						previouslyLockedIds = [];
 					},
 					totalDice * 150 + 1000
@@ -177,6 +183,7 @@
 		eventSource.addEventListener('turn-ended', (e) => {
 			const eventData = JSON.parse(e.data);
 			room = eventData.room;
+			displayedTurnScore = 0;
 		});
 
 		eventSource.addEventListener('game-ended', (e) => {
@@ -360,10 +367,12 @@
 
 <div class="w-full p-4">
 	{#if loading}
-		<div class="flex items-center justify-center">
+		<div class="flex flex-col items-center justify-center gap-3">
 			<div class="text-xl font-bold text-white" style="text-shadow: 2px 2px 0 #FF1493;">
 				Loading game...
 			</div>
+			<!-- go home link -->
+			<p><a href="/" class="text-90s-cyan font-bold hover:!text-white">← Back to Home</a></p>
 		</div>
 	{:else if !room}
 		<div class="flex flex-col items-center justify-center">
@@ -478,7 +487,7 @@
 									{/if}
 								</p>
 								<p class="text-90s-yellow mt-2 text-3xl font-bold">
-									Turn Score: {room.gameState.turnScore}
+									Turn Score: {showingRoll ? displayedTurnScore : room.gameState.turnScore}
 								</p>
 							</div>
 
@@ -487,7 +496,7 @@
 								{#if lockedDice.length > 0 && !showingRoll}
 									<div class="mb-4 transition-all duration-500">
 										<p class="text-90s-cyan mb-2 text-center text-sm font-bold">
-											🏦 Banked this turn ({lockedDice.length} point{lockedDice.length !== 1
+											🏦 Locked this round ({lockedDice.length} point{lockedDice.length !== 1
 												? 's'
 												: ''})
 										</p>
@@ -552,7 +561,7 @@
 									{#if activeDice.length > 0}
 										<div class="mb-4">
 											<p class="text-90s-purple mb-2 text-center text-sm font-bold">
-												🎲 Dice to roll ({activeDice.length} remaining)
+												🎲 Cubes to roll ({activeDice.length} remaining)
 											</p>
 											<div class="mx-auto flex max-w-[340px] flex-wrap justify-center gap-3">
 												{#each activeDice as die (die.id)}
@@ -593,14 +602,14 @@
 									<button
 										onclick={rollDice}
 										disabled={!canRoll}
-										class="bg-90s-cyan md:hover:bg-90s-cyan/80 transform rounded-xl border-2 border-white px-8 py-4 font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-gray-600 md:text-lg md:hover:scale-105"
+										class="bg-90s-cyan md:hover:bg-90s-cyan/80 transform rounded-xl border-2 border-white p-4 text-sm font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-gray-600 md:text-lg md:hover:scale-105"
 									>
 										{rolling ? 'Rolling...' : 'Roll'}
 									</button>
 									<button
 										onclick={bankPoints}
 										disabled={!canBank}
-										class="bg-90s-yellow md:hover:bg-90s-yellow/80 transform rounded-xl border-2 border-white px-8 py-4 font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-gray-600 md:text-lg md:hover:scale-105"
+										class="bg-90s-yellow md:hover:bg-90s-yellow/80 transform rounded-xl border-2 border-white p-4 text-sm font-semibold text-black transition-all disabled:cursor-not-allowed disabled:bg-gray-600 md:text-lg md:hover:scale-105"
 									>
 										Bank {room.gameState.turnScore} pts
 									</button>
