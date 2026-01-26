@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 
 	let { data } = $props();
 
@@ -56,7 +57,7 @@
 					class="mb-2 text-5xl font-bold text-white drop-shadow-lg"
 					style="text-shadow: 3px 3px 0 #FF1493, 6px 6px 0 #00CED1;"
 				>
-					🎲 Cube Toss!
+					<Logo />
 				</h1>
 			</a>
 			<p class="text-lg font-bold text-white" style="text-shadow: 2px 2px 0 #9B59B6;">

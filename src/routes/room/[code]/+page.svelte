@@ -4,6 +4,7 @@
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
 	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
 	import ButtonYellow from '$lib/components/ButtonYellow.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 
 	let { data } = $props();
 
@@ -365,7 +366,7 @@
 				<div>
 					<a href="/">
 						<h1 class="text-2xl font-bold text-white" style="text-shadow: 2px 2px 0 #FF1493;">
-							🎲 Cube Toss!
+							<Logo />
 						</h1>
 					</a>
 					<button
@@ -429,11 +430,8 @@
 								{#if room.players.length < 2}
 									<p class="mb-4 font-bold text-90s-yellow">Need at least 2 players to start</p>
 								{/if}
-								<ButtonPink
-									onclick={startGame}
-									disabled={!canStart}
-									_class="
-								!w-auto">Start Game</ButtonPink
+								<ButtonPink onclick={startGame} disabled={!canStart} _class="!w-auto"
+									>Start Game</ButtonPink
 								>
 							{:else}
 								<p class="text-90s-cyan">Waiting for host to start the game...</p>
@@ -556,7 +554,7 @@
 										<div
 											class="mb-4 rounded-xl border-[3px] border-90s-cyan bg-90s-cyan/20 p-4 text-center"
 										>
-											<p class="text-lg font-bold text-90s-cyan">🎉 All 10 dice are green!</p>
+											<p class="text-lg font-bold text-90s-cyan">🎉 All 10 dice are blue!</p>
 											<p class="text-sm text-white">
 												Roll again to keep scoring, or bank your {room.gameState.turnScore} points!
 											</p>
@@ -632,7 +630,7 @@
 				<div class="mt-3 space-y-2 text-sm text-white">
 					<p class="inline-=flex">
 						<span class="inline-block size-4 rounded-full bg-90s-cyan"></span>
-						<strong class="text-90s-cyan">Green dice</strong> = +1 point. These get locked and you keep
+						<strong class="text-90s-cyan">Blue dice</strong> = +1 point. These get locked and you keep
 						rolling!
 					</p>
 					<p class="inline-=flex">
@@ -641,8 +639,8 @@
 					</p>
 					<p class="inline-=flex">
 						<span class="inline-block size-4 rounded-full bg-90s-pink"></span>
-						<strong class="text-90s-pink">Red dice</strong> = Danger! If you roll ANY red without rolling
-						at least one green, you BUST and lose all unbanked points for this turn.
+						<strong class="text-90s-pink">Pink dice</strong> = Danger! If you roll ANY pink without rolling
+						at least one blue, you BUST and lose all unbanked points for this turn.
 					</p>
 					<p>💰 <strong>Bank</strong> your points to add them to your score safely.</p>
 					<p>

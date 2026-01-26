@@ -6,20 +6,22 @@
 		type = 'button',
 		children,
 		onclick,
-		disabled = false
+		disabled = false,
+		_class = ''
 	}: {
 		href?: string | null;
 		type?: 'button' | 'submit' | 'reset';
 		children: Snippet;
 		onclick?: () => void;
 		disabled?: boolean;
+		_class?: string;
 	} = $props();
 </script>
 
 {#if href}
 	<a
 		{href}
-		class="inline-block transform cursor-pointer rounded-xl border-b-4 border-[color-mix(in_srgb,var(--color-90s-pink)_70%,black)] bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+		class={`inline-block w-full transform cursor-pointer rounded-xl border-b-4 border-[color-mix(in_srgb,var(--color-90s-pink)_70%,black)] bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110 ${_class}`}
 	>
 		{@render children()}
 	</a>
@@ -28,7 +30,7 @@
 		{type}
 		{onclick}
 		{disabled}
-		class="w-full transform cursor-pointer rounded-xl border-b-4 border-[color-mix(in_srgb,var(--color-90s-pink)_70%,black)] bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110"
+		class={`inline-block w-full transform cursor-pointer rounded-xl border-b-4 border-[color-mix(in_srgb,var(--color-90s-pink)_70%,black)] bg-90s-pink px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:brightness-110 ${_class}`}
 	>
 		{@render children()}
 	</button>

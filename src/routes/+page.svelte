@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 
 	let mode: 'home' | 'create' | 'join' = $state('home');
 	let hostName = $state('');
@@ -90,11 +91,8 @@
 		<!-- Logo/Title -->
 		<div class="relative mb-8 text-center">
 			<a href="/">
-				<h1
-					class="mb-2 text-5xl font-bold text-white drop-shadow-lg"
-					style="text-shadow: 3px 3px 0 #FF1493, 6px 6px 0 #00CED1;"
-				>
-					🎲 Cube Toss!
+				<h1 class="mb-2 text-5xl font-bold text-white">
+					<Logo />
 				</h1>
 			</a>
 			<p class="text-lg font-bold text-white" style="text-shadow: 2px 2px 0 #9B59B6;">
@@ -119,7 +117,7 @@
 					<ul class="space-y-1 text-sm text-white">
 						<li class="inline-block">
 							<span class="inline-block size-4 rounded-full bg-90s-cyan align-middle"></span>
-							<strong class="text-90s-cyan">Green</strong> = +1 point (keep rolling!)
+							<strong class="text-90s-cyan">Blue</strong> = +1 point (keep rolling!)
 						</li>
 						<li class="inline-block">
 							<span class="inline-block size-4 rounded-full bg-90s-yellow align-middle"></span>
@@ -127,7 +125,7 @@
 						</li>
 						<li class="inline-block">
 							<span class="inline-block size-4 rounded-full bg-90s-pink align-middle"></span>
-							<strong class="text-90s-pink">Red</strong> without green = BUST!
+							<strong class="text-90s-pink">Pink</strong> without blue = BUST!
 						</li>
 						<li>🏆 First to 100 triggers final round!</li>
 					</ul>
@@ -178,10 +176,10 @@
 							bind:value={targetScore}
 							class="w-full rounded-xl border-[3px] border-90s-pink bg-black/50 px-4 py-3 text-white ring-90s-pink focus:ring-2 focus:outline-none"
 						>
-							<option value={50}>50 points (lighting round)</option>
-							<option value={100}>100 points (standard)</option>
-							<option value={150}>150 points (whoa man)</option>
-							<option value={200}>200 points (what are ya nuts)</option>
+							<option value={50}>50 points (wicked fast)</option>
+							<option value={100}>100 points (juuust right)</option>
+							<option value={150}>150 points (whoa, man)</option>
+							<option value={200}>200 points (what are you nuts)</option>
 						</select>
 					</div>
 

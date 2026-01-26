@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="size-[1.2em]">
+<span class="flex items-center gap-2">
+	<span>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="size-[1.2em]">
 			<!-- Background fill to prevent gaps -->
 			<path
 				d="M288.3 61.5C308.1 50.1 332.5 50.1 352.3 61.5L528.2 163C548 174.4 560.2 195.6 560.2 218.4L560.2 421.4C560.2 444.3 548 465.4 528.2 476.8L352.3 578.5C332.5 589.9 308.1 589.9 288.3 578.5L112.5 477C92.7 465.6 80.5 444.4 80.5 421.6L80.5 218.6C80.5 195.7 92.7 174.6 112.5 163.2L288.3 61.5z"
@@ -33,3 +35,6 @@
 				stroke-width="20"
 			/>
 		</svg>
+	</span>
+	<span class="drop-shadow-lg" style="text-shadow: 3px 3px 0 #FF1493">Cube Toss!</span></span
+>
