@@ -1,6 +1,8 @@
 <script lang="ts">
 	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
+	import { reducedEffects, highContrast } from '$lib/stores/accessibility';
+
 	let mode: 'home' | 'create' | 'join' = $state('home');
 	let hostName = $state('');
 	let playerName = $state('');
@@ -87,7 +89,7 @@
 <div class="flex items-center justify-center p-4">
 	<div class="w-full max-w-md">
 		<!-- Logo/Title -->
-		<div class="mb-8 text-center">
+		<div class="relative mb-8 text-center">
 			<a href="/">
 				<h1
 					class="mb-2 text-5xl font-bold text-white drop-shadow-lg"
@@ -99,6 +101,22 @@
 			<p class="text-lg font-bold text-white" style="text-shadow: 2px 2px 0 #9B59B6;">
 				The cube game of risk and reward
 			</p>
+			<div class="mt-3 flex justify-center gap-2">
+				<button
+					onclick={() => ($reducedEffects = !$reducedEffects)}
+					class="rounded-lg bg-90s-purple px-2 py-1 text-xs text-white hover:bg-[color-mix(in_srgb,var(--color-90s-purple)_70%,white)]"
+					aria-label="Toggle reduced visual effects"
+				>
+					{$reducedEffects ? '✨ Effects Off' : '✨ Effects On'}
+				</button>
+				<button
+					onclick={() => ($highContrast = !$highContrast)}
+					class="rounded-lg bg-90s-purple px-2 py-1 text-xs text-white hover:bg-[color-mix(in_srgb,var(--color-90s-purple)_70%,white)]"
+					aria-label="Toggle high contrast mode"
+				>
+					{$highContrast ? '◐ Contrast High' : '◐ Contrast Normal'}
+				</button>
+			</div>
 		</div>
 
 		<!-- Main Card -->

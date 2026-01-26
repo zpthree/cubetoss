@@ -4,6 +4,7 @@
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
 	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
 	import ButtonYellow from '$lib/components/ButtonYellow.svelte';
+	import { reducedEffects, highContrast } from '$lib/stores/accessibility';
 
 	let { data } = $props();
 
@@ -369,13 +370,30 @@
 					</button>
 				</div>
 
-				{#if room.gameState.phase === 'final-round'}
-					<div
-						class="animate-pulse rounded-lg border-[3px] border-black bg-90s-yellow px-4 py-2 font-bold text-black"
+				<div class="flex items-center gap-3">
+					<button
+						onclick={() => ($reducedEffects = !$reducedEffects)}
+						class="rounded-lg bg-90s-purple px-2 py-1 text-xs text-white hover:bg-[color-mix(in_srgb,var(--color-90s-purple)_70%,white)]"
+						aria-label="Toggle reduced visual effects"
 					>
-						⚡ FINAL ROUND!
-					</div>
-				{/if}
+						{$reducedEffects ? '✨ Off' : '✨ On'}
+					</button>
+					<button
+						onclick={() => ($highContrast = !$highContrast)}
+						class="rounded-lg bg-90s-purple px-2 py-1 text-xs text-white hover:bg-[color-mix(in_srgb,var(--color-90s-purple)_70%,white)]"
+						aria-label="Toggle high contrast mode"
+					>
+						{$highContrast ? '◐ High' : '◐ Normal'}
+					</button>
+
+					{#if room.gameState.phase === 'final-round'}
+						<div
+							class="animate-pulse rounded-lg border-[3px] border-black bg-90s-yellow px-4 py-2 font-bold text-black"
+						>
+							⚡ FINAL ROUND!
+						</div>
+					{/if}
+				</div>
 			</div>
 
 			<!-- Error Display -->
@@ -630,8 +648,9 @@
 					</p>
 					<p>💰 <strong>Bank</strong> your points to add them to your score safely.</p>
 					<p>
-						🏆 First player to reach <strong class="text-90s-cyan">{room.gameState.targetScore} points</strong> triggers the final
-						round!
+						🏆 First player to reach <strong class="text-90s-cyan"
+							>{room.gameState.targetScore} points</strong
+						> triggers the final round!
 					</p>
 					<p>⚡ In the final round, everyone gets one last turn to beat the high score.</p>
 				</div>
