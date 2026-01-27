@@ -415,7 +415,7 @@
 							>
 								<span class="truncate"
 									>{typeof window !== 'undefined'
-										? window.location.origin
+										? window.location.origin.replace(/^https?:\/\/(www\.)?/, '')
 										: ''}/join/{data.roomCode}</span
 								>
 								<span class="shrink-0 text-lg">{copiedLink ? '✓' : '📋'}</span>
