@@ -21,7 +21,7 @@
 		</li>
 		<li class="inline-block">
 			<span class="inline-block size-4 rounded-full bg-90s-yellow align-middle"></span>
-			<strong class="text-90s-yellow">Yellow</strong> = neutral (roll again)
+			<strong class="text-90s-yellow">Yellow</strong> = neutral with pink (roll again)
 		</li>
 		<li class="inline-block">
 			<span class="inline-block size-4 rounded-full bg-90s-pink align-middle"></span>

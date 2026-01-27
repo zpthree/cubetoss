@@ -633,16 +633,17 @@
 			>
 				<summary class="cursor-pointer font-bold text-90s-yellow">How to Play</summary>
 				<div class="mt-3 space-y-2 text-sm text-white">
-					<p class="inline-block">
+					<p>
 						<span class="inline-block size-4 rounded-full bg-90s-cyan align-middle"></span>
 						<strong class="text-90s-cyan">Blue dice</strong> = +1 point. These get locked and you keep
 						rolling!
 					</p>
-					<p class="inline-block">
+					<p>
 						<span class="inline-block size-4 rounded-full bg-90s-yellow align-middle"></span>
-						<strong class="text-90s-yellow">Yellow dice</strong> = Neutral. Roll again or bank your points.
+						<strong class="text-90s-yellow">Yellow dice</strong> = Neutral. Roll again (unless you rolled
+						pink and no blues) or bank your points.
 					</p>
-					<p class="inline-block">
+					<p>
 						<span class="inline-block size-4 rounded-full bg-90s-pink align-middle"></span>
 						<strong class="text-90s-pink">Pink dice</strong> = Danger! If you roll ANY pink without rolling
 						at least one blue, you BUST and lose all unbanked points for this turn.
