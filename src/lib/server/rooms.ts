@@ -347,3 +347,12 @@ export function cleanupRooms(): void {
 if (typeof setInterval !== 'undefined') {
 	setInterval(cleanupRooms, 60 * 1000); // Check every minute
 }
+
+// Get total player count across all rooms
+export function getTotalPlayerCount(): number {
+	let total = 0;
+	for (const room of rooms.values()) {
+		total += room.players.filter((p: Player) => p.isConnected).length;
+	}
+	return total;
+}
