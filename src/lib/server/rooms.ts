@@ -505,23 +505,6 @@ export function executeBotTurn(code: string, playerId: string): void {
 	}
 }
 
-// Check if current player is a bot and trigger their turn
-export function checkAndTriggerBotTurn(code: string): void {
-	const room = getRoom(code);
-	if (!room) return;
-
-	const { gameState, players } = room;
-	if (gameState.phase !== 'playing' && gameState.phase !== 'final-round') return;
-
-	const currentPlayer = players[gameState.currentPlayerIndex];
-	if (currentPlayer.isBot) {
-		// Delay before bot starts their turn
-		setTimeout(() => {
-			executeBotTurn(code, currentPlayer.id);
-		}, 2000);
-	}
-}
-
 // Get total player count across all rooms
 export function getTotalPlayerCount(): number {
 	let total = 0;
