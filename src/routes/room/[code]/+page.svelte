@@ -432,7 +432,7 @@
 			<div class="grid gap-6 md:grid-cols-3">
 				<!-- Main Game Board -->
 				<div
-					class="bg-black-6 rounded-xl border-4 border-90s-pink shadow-[0_0_20px_rgba(255,20,147,0.5)] backdrop-blur md:col-span-2"
+					class="rounded-xl border-4 border-90s-pink bg-black p-6 shadow-[0_0_20px_rgba(255,20,147,0.5)] backdrop-blur md:col-span-2"
 				>
 					{#if room.gameState.phase === 'waiting'}
 						<!-- Waiting Room -->
