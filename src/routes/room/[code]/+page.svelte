@@ -432,7 +432,7 @@
 			<div class="grid gap-6 md:grid-cols-3">
 				<!-- Main Game Board -->
 				<div
-					class="rounded-xl border-4 border-90s-pink bg-black/80 p-6 shadow-[0_0_20px_rgba(255,20,147,0.5)] backdrop-blur md:col-span-2"
+					class="bg-black-6 rounded-xl border-4 border-90s-pink shadow-[0_0_20px_rgba(255,20,147,0.5)] backdrop-blur md:col-span-2"
 				>
 					{#if room.gameState.phase === 'waiting'}
 						<!-- Waiting Room -->
@@ -628,7 +628,7 @@
 
 				<!-- Players List -->
 				<div
-					class="rounded-xl border-4 border-90s-cyan bg-black/80 p-4 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-cyan backdrop-blur"
+					class="rounded-xl border-4 border-90s-cyan bg-black p-4 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-cyan backdrop-blur"
 				>
 					<!-- show target score -->
 					<div class="mb-4 text-center">
