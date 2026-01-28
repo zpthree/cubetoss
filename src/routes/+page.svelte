@@ -44,10 +44,10 @@
 
 		<!-- Footer -->
 		<p
-			class="mt-6 text-center text-sm font-bold text-white"
+			class="mt-6 max-w-80 text-center text-sm font-bold text-white"
 			style="text-shadow: 1px 1px 0 #FF1493;"
 		>
-			No account needed • Rooms expire after 2 hours
+			No account needed • Rooms expire after 2 hours and every day at 2 am EST
 		</p>
 		<footer class="mt-4 text-center text-sm text-white/50">
 			&copy; 2026 A game by <a
