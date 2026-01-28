@@ -1,30 +1,8 @@
 <script>
-	import { onMount } from 'svelte';
 	import ButtonCyan from '$lib/components/ButtonCyan.svelte';
 	import ButtonPink from '$lib/components/ButtonPink.svelte';
 
 	let { mode = $bindable(), error = $bindable(), loading = $bindable() } = $props();
-
-	let totalPlayers = $state(0);
-
-	async function fetchPlayerCount() {
-		try {
-			const res = await fetch('/api/stats');
-			if (res.ok) {
-				const data = await res.json();
-				totalPlayers = data.totalPlayers;
-			}
-		} catch {
-			// Silently fail - not critical
-		}
-	}
-
-	onMount(() => {
-		fetchPlayerCount();
-		// Refresh every 30 seconds
-		const interval = setInterval(fetchPlayerCount, 30000);
-		return () => clearInterval(interval);
-	});
 </script>
 
 <!-- Home Screen -->
@@ -54,14 +32,4 @@
 	<a href="/rules" class="mt-3 inline-block text-sm font-bold text-90s-cyan hover:text-90s-yellow">
 		Learn more →
 	</a>
-</div>
-
-<!-- Total Players (desktop only) -->
-<div
-	class="fixed right-4 bottom-4 hidden rounded-lg border-2 border-90s-pink/30 bg-90s-pink/10 px-2 py-1 text-sm text-white/80 backdrop-blur-sm lg:block"
->
-	<span class="font-bold text-90s-yellow/80">{totalPlayers}</span> player{totalPlayers === 1
-		? ''
-		: 's'}
-	online
 </div>

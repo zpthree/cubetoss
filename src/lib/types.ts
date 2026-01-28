@@ -12,6 +12,7 @@ export interface Player {
 	id: string;
 	name: string;
 	isHost: boolean;
+	isBot: boolean;
 	score: number;
 	isConnected: boolean;
 	turnScore: number; // Points accumulated this turn (not yet banked)

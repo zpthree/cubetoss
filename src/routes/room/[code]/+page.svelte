@@ -303,6 +303,36 @@
 		setTimeout(() => (copiedLink = false), 2000);
 	}
 
+	async function addBot() {
+		try {
+			const response = await fetch(`/api/room/${data.roomCode}/bot`, {
+				method: 'POST'
+			});
+			const result = await response.json();
+			if (!result.success) {
+				error = result.error;
+			}
+		} catch {
+			error = 'Failed to add bot';
+		}
+	}
+
+	async function removeBot(botId: string) {
+		try {
+			const response = await fetch(`/api/room/${data.roomCode}/bot`, {
+				method: 'DELETE',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ botId })
+			});
+			const result = await response.json();
+			if (!result.success) {
+				error = result.error;
+			}
+		} catch {
+			error = 'Failed to remove bot';
+		}
+	}
+
 	function getDieClasses(die: Die): string {
 		const baseClasses =
 			'w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ring-2 ring-white';
@@ -429,9 +459,14 @@
 								{#if room.players.length < 2}
 									<p class="mb-4 font-bold text-90s-yellow">Need at least 2 players to start</p>
 								{/if}
-								<ButtonPink onclick={startGame} disabled={!canStart} _class="!w-auto"
-									>Start Game</ButtonPink
-								>
+								<div class="flex flex-wrap justify-center gap-3">
+									<ButtonPink onclick={startGame} disabled={!canStart} _class="!w-auto"
+										>Start Game</ButtonPink
+									>
+									{#if room.players.length < 8}
+										<ButtonCyan onclick={addBot} _class="!w-auto">+ Add Bot</ButtonCyan>
+									{/if}
+								</div>
 							{:else}
 								<p class="text-90s-cyan">Waiting for host to start the game...</p>
 							{/if}
@@ -613,6 +648,9 @@
 									{#if player.isHost}
 										<span class="text-90s-yellow">👑</span>
 									{/if}
+									{#if player.isBot}
+										<span class="text-90s-purple">🤖</span>
+									{/if}
 									<span class="text-white {player.id === playerId ? 'font-bold' : ''}">
 										{player.name}
 										{#if player.id === playerId}
@@ -620,7 +658,18 @@
 										{/if}
 									</span>
 								</div>
-								<div class="font-bold text-90s-yellow">{player.score}</div>
+								<div class="flex items-center gap-2">
+									<span class="font-bold text-90s-yellow">{player.score}</span>
+									{#if player.isBot && isHost && room.gameState.phase === 'waiting'}
+										<button
+											onclick={() => removeBot(player.id)}
+											class="cursor-pointer text-90s-pink hover:text-white"
+											title="Remove bot"
+										>
+											✕
+										</button>
+									{/if}
+								</div>
 							</div>
 						{/each}
 					</div>

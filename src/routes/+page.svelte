@@ -37,7 +37,7 @@
 
 		<!-- Main Card -->
 		<div
-			class="h-full w-full rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink md:h-110 md:w-100"
+			class="h-full w-full rounded-2xl border-4 border-90s-pink bg-black p-8 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink md:h-110 md:w-100"
 		>
 			<Component bind:mode bind:error bind:loading />
 		</div>

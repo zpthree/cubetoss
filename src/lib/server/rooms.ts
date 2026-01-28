@@ -73,6 +73,7 @@ export function createRoom(
 		id: playerId,
 		name: hostName,
 		isHost: true,
+		isBot: false,
 		score: 0,
 		isConnected: true,
 		turnScore: 0
@@ -116,6 +117,7 @@ export function joinRoom(code: string, playerName: string): { player: Player; ro
 		id: playerId,
 		name: playerName,
 		isHost: false,
+		isBot: false,
 		score: 0,
 		isConnected: true,
 		turnScore: 0
@@ -277,9 +279,18 @@ function endTurn(room: Room): void {
 			gameState.winner = winner.id;
 			gameState.phase = 'ended';
 			broadcastToRoom(room.code, 'game-ended', { room, winner });
+			return; // Don't trigger bot turn if game ended
 		} else {
 			gameState.playersHadFinalTurn.push(nextPlayer.id);
 		}
+	}
+
+	// If next player is a bot, trigger their turn
+	const nextPlayer = players[gameState.currentPlayerIndex];
+	if (nextPlayer.isBot && (gameState.phase === 'playing' || gameState.phase === 'final-round')) {
+		setTimeout(() => {
+			executeBotTurn(room.code, nextPlayer.id);
+		}, 2000);
 	}
 }
 
@@ -346,6 +357,169 @@ export function cleanupRooms(): void {
 // Start cleanup interval
 if (typeof setInterval !== 'undefined') {
 	setInterval(cleanupRooms, 60 * 1000); // Check every minute
+}
+
+// Bot names pool
+const BOT_NAMES = [
+	'Robo Roller',
+	'Dice Bot',
+	'Cube King',
+	'Lucky Bot',
+	'Risk Taker',
+	'Safe Player',
+	'Turbo Toss',
+	'Mega Roller'
+];
+
+// Add a bot to the room
+export function addBot(code: string): { player: Player; room: Room } | null {
+	const room = getRoom(code.toUpperCase());
+	if (!room) return null;
+
+	// Only allow bots in waiting phase
+	if (room.gameState.phase !== 'waiting') {
+		return null;
+	}
+
+	// Limit to 8 players total
+	if (room.players.length >= 8) {
+		return null;
+	}
+
+	// Pick a bot name not already in use
+	const usedNames = room.players.map((p) => p.name);
+	const availableNames = BOT_NAMES.filter((n) => !usedNames.includes(n));
+	const botName =
+		availableNames.length > 0
+			? availableNames[Math.floor(Math.random() * availableNames.length)]
+			: `Bot ${room.players.length}`;
+
+	const playerId = generatePlayerId();
+	const player: Player = {
+		id: playerId,
+		name: botName,
+		isHost: false,
+		isBot: true,
+		score: 0,
+		isConnected: true,
+		turnScore: 0
+	};
+
+	room.players.push(player);
+	room.lastActivity = Date.now();
+
+	broadcastToRoom(code, 'player-joined', { player, room });
+
+	return { player, room };
+}
+
+// Remove a bot from the room
+export function removeBot(code: string, botId: string): boolean {
+	const room = getRoom(code.toUpperCase());
+	if (!room) return false;
+
+	// Only allow removing bots in waiting phase
+	if (room.gameState.phase !== 'waiting') {
+		return false;
+	}
+
+	const botIndex = room.players.findIndex((p) => p.id === botId && p.isBot);
+	if (botIndex === -1) return false;
+
+	room.players.splice(botIndex, 1);
+	broadcastToRoom(code, 'player-left', { playerId: botId, room });
+
+	return true;
+}
+
+// Medium bot strategy: decides whether to bank or keep rolling
+function botShouldBank(
+	turnScore: number,
+	diceRemaining: number,
+	targetScore: number,
+	currentScore: number
+): boolean {
+	// If banking would win or trigger final round, do it
+	if (currentScore + turnScore >= targetScore) {
+		return true;
+	}
+
+	// Medium strategy: aim for 15-25 points per turn
+	// More aggressive with more dice, slightly conservative with fewer
+	const baseThreshold = 15;
+	const diceRiskFactor = (10 - diceRemaining) * 1; // 0 to 10 points added
+	const threshold = baseThreshold + diceRiskFactor;
+
+	// Add some randomness to make it less predictable
+	const randomFactor = Math.random() * 6 - 3; // -3 to +3
+
+	return turnScore >= threshold + randomFactor;
+}
+
+// Execute a bot's turn (called recursively until bank or bust)
+export function executeBotTurn(code: string, playerId: string): void {
+	const room = getRoom(code);
+	if (!room) return;
+
+	const { gameState, players } = room;
+	const currentPlayer = players[gameState.currentPlayerIndex];
+
+	// Verify it's this bot's turn
+	if (currentPlayer.id !== playerId || !currentPlayer.isBot) return;
+
+	// Check game is still in progress
+	if (gameState.phase !== 'playing' && gameState.phase !== 'final-round') return;
+
+	const diceRemaining = gameState.dice.filter((d) => !d.locked).length;
+	const shouldBank =
+		gameState.turnScore > 0 &&
+		botShouldBank(gameState.turnScore, diceRemaining, gameState.targetScore, currentPlayer.score);
+
+	if (shouldBank) {
+		// Bot decides to bank
+		setTimeout(() => {
+			bankPoints(code, playerId);
+		}, 1500);
+	} else {
+		// Bot decides to roll
+		setTimeout(() => {
+			const result = rollDice(code, playerId);
+
+			// If not busted, continue the turn after a delay
+			if (result.success && !result.busted) {
+				// Check if game ended (e.g., all dice locked scenario handled in rollDice)
+				const updatedRoom = getRoom(code);
+				if (
+					updatedRoom &&
+					(updatedRoom.gameState.phase === 'playing' ||
+						updatedRoom.gameState.phase === 'final-round') &&
+					updatedRoom.players[updatedRoom.gameState.currentPlayerIndex].id === playerId
+				) {
+					// Still this bot's turn, continue
+					setTimeout(() => {
+						executeBotTurn(code, playerId);
+					}, 2000);
+				}
+			}
+		}, 1500);
+	}
+}
+
+// Check if current player is a bot and trigger their turn
+export function checkAndTriggerBotTurn(code: string): void {
+	const room = getRoom(code);
+	if (!room) return;
+
+	const { gameState, players } = room;
+	if (gameState.phase !== 'playing' && gameState.phase !== 'final-round') return;
+
+	const currentPlayer = players[gameState.currentPlayerIndex];
+	if (currentPlayer.isBot) {
+		// Delay before bot starts their turn
+		setTimeout(() => {
+			executeBotTurn(code, currentPlayer.id);
+		}, 2000);
+	}
 }
 
 // Get total player count across all rooms
