@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { PUBLIC_FATHOM_ID } from '$env/static/public';
 	import * as Fathom from 'fathom-client';
-	import { page } from '$app/state';
+	import { onNavigate } from '$app/navigation';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 
@@ -32,8 +32,7 @@
 		return () => clearInterval(interval);
 	});
 
-	$effect(() => {
-		page.url.pathname;
+	onNavigate(() => {
 		Fathom.trackPageview();
 	});
 </script>
