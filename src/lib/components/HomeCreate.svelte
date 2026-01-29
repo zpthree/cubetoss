@@ -78,7 +78,7 @@
 			bind:value={targetScore}
 			class="w-full rounded-xl border-[3px] border-90s-pink bg-black/50 px-4 py-3 text-white ring-90s-pink focus:ring-2 focus:outline-none"
 		>
-			<option value={50}>50 points (wicked fast)</option>
+			<option value={50}>50 points (easy peazy)</option>
 			<option value={100}>100 points (just right)</option>
 			<option value={150}>150 points (whoa, man)</option>
 			<option value={200}>200 points (what are you nuts)</option>
