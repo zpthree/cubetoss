@@ -25,7 +25,7 @@
 
 		<!-- Rules Card -->
 		<div
-			class="rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink"
+			class="rounded-2xl border-4 border-90s-pink bg-black p-8 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink"
 		>
 			<h1 class="text-center text-4xl font-bold text-white" style="text-shadow: 1px 1px 0 #FF1493;">
 				How to Play <span class="sr-only">Cube Toss!</span>
