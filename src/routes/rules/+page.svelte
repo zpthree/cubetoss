@@ -10,18 +10,12 @@
 <div class="p-4">
 	<div class="mx-auto max-w-2xl">
 		<!-- Header -->
-		<div class="mb-8 text-center">
+		<div class="mb-4 text-center">
 			<a href="/">
-				<h1
-					class="mb-2 text-4xl font-bold text-white drop-shadow-lg"
-					style="text-shadow: 3px 3px 0 #FF1493, 6px 6px 0 #00CED1;"
-				>
+				<span class="mb-2 text-3xl font-bold text-white">
 					<Logo />
-				</h1>
+				</span>
 			</a>
-			<p class="text-lg font-bold text-white" style="text-shadow: 2px 2px 0 #9B59B6;">
-				How to Play
-			</p>
 		</div>
 
 		<!-- Back link -->
@@ -33,6 +27,9 @@
 		<div
 			class="rounded-2xl border-4 border-90s-pink bg-black/80 p-8 shadow-[0_0_20px_rgba(255,20,147,0.5)] shadow-90s-pink"
 		>
+			<h1 class="text-center text-4xl font-bold text-white" style="text-shadow: 1px 1px 0 #FF1493;">
+				How to Play <span class="sr-only">Cube Toss!</span>
+			</h1>
 			<!-- Overview -->
 			<section class="mb-8">
 				<h2 class="mb-4 text-2xl font-bold text-90s-yellow">Overview</h2>
