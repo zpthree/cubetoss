@@ -1,8 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { PUBLIC_FATHOM_ID } from '$env/static/public';
-	import * as Fathom from 'fathom-client';
-	import { onNavigate } from '$app/navigation';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 
@@ -22,18 +19,10 @@
 	}
 
 	onMount(() => {
-		Fathom.load(PUBLIC_FATHOM_ID, {
-			includedDomains: ['cubetoss.fun']
-		});
-
 		fetchPlayerCount();
 		// Refresh every 30 seconds
 		const interval = setInterval(fetchPlayerCount, 30000);
 		return () => clearInterval(interval);
-	});
-
-	onNavigate(() => {
-		Fathom.trackPageview();
 	});
 </script>
 
