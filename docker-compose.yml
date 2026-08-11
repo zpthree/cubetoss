@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    ports:
+      - '7945:7945'
+    environment:
+      HOST: 0.0.0.0
+      PORT: 7945
+    restart: unless-stopped
